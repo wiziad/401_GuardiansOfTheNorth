@@ -22,3 +22,7 @@ UserSettings/
 
 .DS_Store
 Thumbs.db
+
+backend/.env
+backend/node_modules/
+backend/.next/
