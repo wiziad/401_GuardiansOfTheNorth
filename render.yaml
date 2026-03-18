@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: guardians-of-the-north-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: ENABLE_DB_KEEP_ALIVE
+        value: "true"
+      - key: KEEP_ALIVE_INTERVAL_MINUTES
+        value: "30"
