@@ -19,12 +19,12 @@ Render PostgreSQL
 Use one base URL and append the route path.
 
 - local development: `http://localhost:3000`
-- deployed backend: `https://your-backend-name.onrender.com`
+- deployed backend: `https://four01-guardiansofthenorth.onrender.com`
 
 Examples:
 
-- `https://your-backend-name.onrender.com/api/auth/login`
-- `https://your-backend-name.onrender.com/api/saves`
+- `https://four01-guardiansofthenorth.onrender.com/api/auth/login`
+- `https://four01-guardiansofthenorth.onrender.com/api/saves`
 
 ## Auth Flow
 
@@ -269,7 +269,7 @@ using UnityEngine.Networking;
 
 public class ApiClient : MonoBehaviour
 {
-    private const string BaseUrl = "https://your-backend-name.onrender.com";
+    private const string BaseUrl = "https://four01-guardiansofthenorth.onrender.com";
     private string authToken;
 
     public void SetToken(string token)
@@ -370,4 +370,12 @@ When starting a brand new game:
 
 ## Deployment Reminder
 
-The backend is deployed through Render using the root repository file [render.yaml](/Users/huojunyu/Downloads/401_GuardiansOfTheNorth/render.yaml), but only the `backend/` folder is deployed because the blueprint uses `rootDir: backend`.
+The backend is deployed on Render at:
+
+**`https://four01-guardiansofthenorth.onrender.com`**
+
+Auto-deploy is enabled — any push to the `main` branch in `backend/` triggers a redeploy.
+
+To avoid unnecessary rebuilds from non-backend changes, set **Build Filters → Included Paths** to `backend` in the Render service settings.
+
+If you want to keep integration docs outside of `backend/` so they never touch the deploy pipeline, move them to the root-level `docs/` folder instead.

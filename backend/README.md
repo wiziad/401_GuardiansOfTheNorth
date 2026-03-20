@@ -74,8 +74,7 @@ backend/
     database.integration.test.ts
     saves.test.ts
     validators.test.ts
-  FRONTEND_INTEGRATION.md
-  README.md
+The frontend integration guide has been moved to [docs/FRONTEND_INTEGRATION.md](../docs/FRONTEND_INTEGRATION.md).
 ```
 
 ### What each part does
@@ -322,7 +321,7 @@ Optional:
 
 ## Frontend Integration
 
-Frontend usage details are documented in [FRONTEND_INTEGRATION.md](/Users/huojunyu/Downloads/401_GuardiansOfTheNorth/backend/FRONTEND_INTEGRATION.md).
+Frontend usage details are documented in [docs/FRONTEND_INTEGRATION.md](../docs/FRONTEND_INTEGRATION.md).
 
 That file explains:
 
