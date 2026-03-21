@@ -100,7 +100,7 @@ public class BoarAI : MonoBehaviour
 
     void Attack()
     {
-        attackTimer = attackCooldown;
+        //attackTimer = attackCooldown;
         animator.SetTrigger("Attack");
     }
 
