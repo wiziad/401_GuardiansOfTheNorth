@@ -6,14 +6,21 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
+[ExecuteAlways]
 public class SimpleMenuArtBuilder : MonoBehaviour
 {
+    [Header("Auto Build")]
+    [SerializeField] private bool rebuildOnEnable = true;
+    [SerializeField] private bool rebuildInEditMode = true;
+    [SerializeField] private bool clearCanvasBeforeBuild = true;
+    [SerializeField] private bool includeLegacyProps = false;
+
     [Header("Required")]
     [SerializeField] private RectTransform canvasRoot; // Drag MenuCanvas here
     [SerializeField] private Sprite backSprite;        // Drag "back" here
-    [SerializeField] private Color backTint = Color.white;
+    [SerializeField] private Color backTint = new(1f, 1f, 1f, 1f);
     [SerializeField] private Sprite forestOverlaySprite;
-    [SerializeField] private Color forestOverlayTint = Color.white;
+    [SerializeField] private Color forestOverlayTint = new(1f, 1f, 1f, 0f);
     [SerializeField] private string gameSceneName = "Level_01_Test";
 
     [Header("Workflow")]
@@ -24,28 +31,39 @@ public class SimpleMenuArtBuilder : MonoBehaviour
 
     [Header("Logo")]
     [SerializeField] private bool forceCenteredLayout = true;
-    [SerializeField] private string logoText = "GUARDIANS OF THE NORTH";
+    [SerializeField] private string logoText = "guardians of the north";
     [SerializeField] private TMP_FontAsset logoFont;
-    [SerializeField] private Vector2 logoSize = new(1400f, 260f);
-    [SerializeField] private Vector2 logoPosition = new(0f, -120f);
-    [SerializeField] private float logoRotationZ = -7f;
-    [SerializeField] private float logoCurveAmount = 18f;
-    [SerializeField] private float logoFontSize = 120f;
+    [SerializeField] private Vector2 logoSize = new(1320f, 220f);
+    [SerializeField] private Vector2 logoPosition = new(0f, 210f);
+    [SerializeField] private float logoRotationZ = 0f;
+    [SerializeField] private float logoCurveAmount = 0f;
+    [SerializeField] private float logoFontSize = 128f;
     [SerializeField] private float logoMinFontSize = 64f;
-    [SerializeField] private float logoMaxWidthPercent = 0.9f;
+    [SerializeField] private float logoMaxWidthPercent = 0.86f;
     [SerializeField] private Color logoColor = Color.white;
     [SerializeField] private Color logoOutlineColor = Color.black;
-    [SerializeField] private float logoOutlineWidth = 0.26f;
+    [SerializeField] private float logoOutlineWidth = 0.45f;
+    [SerializeField] private Color logoShadowColor = new(0f, 0f, 0f, 0.9f);
+    [SerializeField] private Vector2 logoShadowDistance = new(6f, -6f);
+
+    [Header("Card")]
+    [SerializeField] private Vector2 cardSize = new(760f, 520f);
+    [SerializeField] private Color cardColor = new(0.03f, 0.06f, 0.08f, 0.78f);
+    [SerializeField] private Color cardBorderColor = new(0.76f, 0.91f, 0.95f, 0.95f);
+    [SerializeField] private Color ambientShadeColor = new(0f, 0f, 0f, 0.42f);
+    [SerializeField] private string subtitleText = "A NORTHERN PIXEL SAGA";
+    [SerializeField] private Color subtitleColor = new(0.88f, 0.96f, 1f, 0.95f);
 
     [Header("Buttons")]
-    [SerializeField] private Vector2 buttonStackPosition = new(0f, -170f);
-    [SerializeField] private Vector2 buttonSize = new(420f, 88f);
-    [SerializeField] private Color buttonColor = new(0.10f, 0.15f, 0.08f, 0.92f);
-    [SerializeField] private Color buttonBorderColor = new(0f, 0f, 0f, 1f);
-    [SerializeField] private Color buttonTextColor = Color.white;
+    [SerializeField] private Vector2 buttonStackPosition = new(0f, -220f);
+    [SerializeField] private Vector2 buttonSize = new(380f, 88f);
+    [SerializeField] private Color buttonColor = new(0.09f, 0.24f, 0.31f, 0.96f);
+    [SerializeField] private Color buttonBorderColor = new(0.88f, 0.97f, 1f, 1f);
+    [SerializeField] private Color buttonTextColor = new(0.98f, 0.99f, 1f, 1f);
 
     private const string BackObjectName = "BackBg";
     private const string ForestOverlayName = "ForestOverlayBg";
+    private const string AmbientShadeName = "AmbientShade";
     private const string LogoObjectName = "LogoTitle";
     private const string ButtonRootName = "MenuButtons";
 
@@ -62,16 +80,46 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         public bool preserveAspect = true;
     }
 
+    private void OnEnable()
+    {
+        TryAutoRebuild();
+    }
+
+    private void Start()
+    {
+        TryAutoRebuild();
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!Application.isPlaying && rebuildOnEnable && rebuildInEditMode)
+        {
+            Rebuild();
+        }
+    }
+#endif
+
     [ContextMenu("Rebuild Now")]
     public void Rebuild()
     {
         if (canvasRoot == null) return;
 
         ConfigureCanvasRoot();
+        if (clearCanvasBeforeBuild)
+        {
+            DeactivateAllCanvasChildren();
+        }
         BuildBack();
-        BuildProps();
-        BuildLogo();
-        BuildButtons();
+        BuildAmbientShade();
+
+        if (includeLegacyProps)
+        {
+            BuildProps();
+        }
+
+        BuildLogo(canvasRoot);
+        BuildButtons(canvasRoot);
     }
 
     [ContextMenu("Capture Props From Scene")]
@@ -139,6 +187,22 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         }
     }
 
+    private void BuildAmbientShade()
+    {
+        GameObject go = GetOrCreateChild(canvasRoot, AmbientShadeName);
+        RectTransform rt = go.GetComponent<RectTransform>();
+        Image img = GetOrAdd<Image>(go);
+
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        img.sprite = null;
+        img.color = ambientShadeColor;
+        go.transform.SetSiblingIndex(2);
+    }
+
     private void ConfigureCanvasRoot()
     {
         Canvas canvas = canvasRoot.GetComponent<Canvas>();
@@ -192,9 +256,9 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         }
     }
 
-    private void BuildLogo()
+    private void BuildLogo(RectTransform parent)
     {
-        GameObject go = GetOrCreateChild(canvasRoot, LogoObjectName);
+        GameObject go = GetOrCreateChild(parent, LogoObjectName);
         RectTransform rt = go.GetComponent<RectTransform>();
         TextMeshProUGUI text = GetOrAdd<TextMeshProUGUI>(go);
 
@@ -205,12 +269,16 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = logoSize;
-        rt.anchoredPosition = forceCenteredLayout ? new Vector2(0f, safeY) : logoPosition;
+        rt.anchoredPosition = forceCenteredLayout
+            ? new Vector2(0f, safeY)
+            : logoPosition;
         rt.localRotation = Quaternion.Euler(0f, 0f, logoRotationZ);
+        rt.localScale = Vector3.one;
         rt.SetSiblingIndex(100);
 
         text.text = logoText;
         text.alignment = TextAlignmentOptions.Center;
+        text.margin = Vector4.zero;
         text.textWrappingMode = TextWrappingModes.NoWrap;
         text.overflowMode = TextOverflowModes.Overflow;
         text.fontSize = logoFontSize;
@@ -226,24 +294,29 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         text.outlineWidth = logoOutlineWidth;
         AutoFitLogo(text);
 
+        Shadow titleShadow = GetOrAdd<Shadow>(go);
+        titleShadow.effectColor = logoShadowColor;
+        titleShadow.effectDistance = logoShadowDistance;
+        titleShadow.useGraphicAlpha = true;
+
         CurvedTMPText curve = GetOrAdd<CurvedTMPText>(go);
         curve.SetCurveAmount(logoCurveAmount);
         curve.RefreshNow();
     }
 
-    private void BuildButtons()
+    private void BuildButtons(RectTransform parent)
     {
-        GameObject root = GetOrCreateChild(canvasRoot, ButtonRootName);
+        GameObject root = GetOrCreateChild(parent, ButtonRootName);
         RectTransform rootRt = root.GetComponent<RectTransform>();
         rootRt.anchorMin = new Vector2(0.5f, 0.5f);
         rootRt.anchorMax = new Vector2(0.5f, 0.5f);
         rootRt.pivot = new Vector2(0.5f, 0.5f);
-        rootRt.sizeDelta = new Vector2(buttonSize.x, 320f);
+        rootRt.sizeDelta = new Vector2(buttonSize.x, buttonSize.y);
         rootRt.anchoredPosition = forceCenteredLayout ? new Vector2(0f, buttonStackPosition.y) : buttonStackPosition;
         rootRt.SetSiblingIndex(110);
 
         VerticalLayoutGroup layout = GetOrAdd<VerticalLayoutGroup>(root);
-        layout.spacing = 14f;
+        layout.spacing = 0f;
         layout.childAlignment = TextAnchor.MiddleCenter;
         layout.childControlWidth = true;
         layout.childControlHeight = true;
@@ -254,10 +327,8 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
 
-        CreateButton(root.transform, "PlayButton", "Start", OnStartPressed);
-        CreateButton(root.transform, "OptionsButton", "Options", OnOptionsPressed);
-        CreateButton(root.transform, "CreditsButton", "Credits", OnCreditsPressed);
-        CreateButton(root.transform, "QuitButton", "Quit", OnQuitPressed);
+        DisableLegacyButtons(root.transform);
+        CreateButton(root.transform, "PlayButton", "PLAY", OnStartPressed);
     }
 
     private void CreateButton(Transform parent, string objectName, string label, UnityEngine.Events.UnityAction action)
@@ -300,7 +371,7 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         text.alignment = TextAlignmentOptions.Center;
         text.textWrappingMode = TextWrappingModes.NoWrap;
         text.overflowMode = TextOverflowModes.Overflow;
-        text.fontSize = 48f;
+        text.fontSize = 44f;
         text.color = buttonTextColor;
         text.fontStyle = FontStyles.Bold;
 
@@ -347,16 +418,6 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         }
     }
 
-    private void OnOptionsPressed()
-    {
-        Debug.Log("Options pressed - hook this to your settings panel.");
-    }
-
-    private void OnCreditsPressed()
-    {
-        Debug.Log("Credits pressed - hook this to your credits panel.");
-    }
-
     private void OnQuitPressed()
     {
         if (Application.isPlaying)
@@ -380,11 +441,50 @@ public class SimpleMenuArtBuilder : MonoBehaviour
     private static GameObject GetOrCreateChild(RectTransform parent, string name)
     {
         Transform existing = parent.Find(name);
-        if (existing != null) return existing.gameObject;
+        if (existing != null)
+        {
+            existing.gameObject.SetActive(true);
+            return existing.gameObject;
+        }
 
         GameObject go = new(name, typeof(RectTransform));
         go.transform.SetParent(parent, false);
         return go;
+    }
+
+    private void TryAutoRebuild()
+    {
+        if (!rebuildOnEnable || canvasRoot == null)
+        {
+            return;
+        }
+
+        if (!Application.isPlaying && !rebuildInEditMode)
+        {
+            return;
+        }
+
+        Rebuild();
+    }
+
+    private void DeactivateAllCanvasChildren()
+    {
+        for (int i = 0; i < canvasRoot.childCount; i++)
+        {
+            canvasRoot.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
+    private static void DisableLegacyButtons(Transform root)
+    {
+        for (int i = 0; i < root.childCount; i++)
+        {
+            Transform child = root.GetChild(i);
+            if (child.name != "PlayButton")
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
     }
 
     private static T GetOrAdd<T>(GameObject go) where T : Component
