@@ -7,9 +7,14 @@ using UnityEngine.SceneManagement;
 public class Level2SceneBootstrap : MonoBehaviour
 {
     public static Level2SceneBootstrap Instance { get; private set; }
+    public const string Level2SceneName = "Level_02_WaterCleanup";
+    public static bool SkipIntroOnce;
+    public static bool IntroRedirectConsumed;
 
     [Header("Preview")]
     [SerializeField] private bool buildInEditMode = true;
+    [SerializeField] private bool showIntroBeforeGameplay = true;
+    [SerializeField] private string introSceneName = "ScrollIntro2";
 
     [Header("Asset Paths")]
     [SerializeField] private string boatPath = "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Boat.png";
@@ -20,7 +25,8 @@ public class Level2SceneBootstrap : MonoBehaviour
     [SerializeField] private int invasiveToSpawn = 10;
     [SerializeField] private int trashToSpawn = 8;
     [SerializeField] private float fishingRange = 2.2f;
-    [SerializeField] private float levelTimerSeconds = 30f;
+    [SerializeField] private float levelTimerSeconds = 60f;
+    [SerializeField] private int boatCapacity = 5;
     [SerializeField] private Vector2 waterMin = new Vector2(-7.4f, -3.1f);
     [SerializeField] private Vector2 waterMax = new Vector2(7.4f, 3.6f);
 
@@ -57,23 +63,44 @@ public class Level2SceneBootstrap : MonoBehaviour
     private bool isBuilding;
     private float nextAutoPreviewTry;
     private bool runtimeBuilt;
+    private bool introGateChecked;
     private float timeRemaining;
     private bool levelFailed;
     private bool levelComplete;
+    private int currentBoatLoad;
+    private bool dockInRange;
+    private bool timerStarted;
+    private bool showInstructionPopup;
+    private float capacityWarningUntil;
 
     private void Awake()
     {
         Instance = this;
+        if (!Application.isPlaying || SceneManager.GetActiveScene().name != Level2SceneName)
+        {
+            IntroRedirectConsumed = false;
+            SkipIntroOnce = false;
+        }
     }
 
     private void OnEnable()
     {
         // Force requested challenge timer regardless of stale scene overrides.
-        levelTimerSeconds = 30f;
+        levelTimerSeconds = 60f;
         runtimeBuilt = false;
 
         if (Application.isPlaying)
         {
+            if (!introGateChecked)
+            {
+                introGateChecked = true;
+                if (ShouldRedirectToIntro())
+                {
+                    SceneManager.LoadScene(introSceneName);
+                    return;
+                }
+            }
+
             BuildRuntimeScene();
             runtimeBuilt = true;
             return;
@@ -88,6 +115,37 @@ public class Level2SceneBootstrap : MonoBehaviour
     private void OnValidate()
     {
         // Keep preview stable; avoid auto-clearing/rebuilding on every inspector tweak.
+    }
+
+    private bool ShouldRedirectToIntro()
+    {
+        if (!showIntroBeforeGameplay || string.IsNullOrWhiteSpace(introSceneName))
+        {
+            return false;
+        }
+
+        if (SceneManager.GetActiveScene().name != Level2SceneName)
+        {
+            return false;
+        }
+
+        if (IntroRedirectConsumed)
+        {
+            Debug.Log("Level2SceneBootstrap: intro redirect already consumed; entering gameplay.");
+            return false;
+        }
+
+        if (SkipIntroOnce)
+        {
+            SkipIntroOnce = false;
+            IntroRedirectConsumed = true;
+            Debug.Log("Level2SceneBootstrap: intro bypass consumed; entering gameplay.");
+            return false;
+        }
+
+        IntroRedirectConsumed = true;
+        Debug.Log("Level2SceneBootstrap: redirecting to ScrollIntro2 before gameplay.");
+        return true;
     }
 
     [ContextMenu("Rebuild Preview")]
@@ -142,6 +200,11 @@ public class Level2SceneBootstrap : MonoBehaviour
         timeRemaining = Mathf.Max(1f, levelTimerSeconds);
         levelFailed = false;
         levelComplete = false;
+        currentBoatLoad = 0;
+        dockInRange = false;
+        timerStarted = false;
+        showInstructionPopup = true;
+        capacityWarningUntil = 0f;
     }
 
     private void Update()
@@ -163,7 +226,12 @@ public class Level2SceneBootstrap : MonoBehaviour
             TryFishCollectible();
         }
 
-        if (!levelFailed)
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            TryCompleteAtDock();
+        }
+
+        if (!levelFailed && !levelComplete && timerStarted)
         {
             timeRemaining -= Time.deltaTime;
             if (timeRemaining <= 0f)
@@ -204,6 +272,11 @@ public class Level2SceneBootstrap : MonoBehaviour
         timeRemaining = Mathf.Max(1f, levelTimerSeconds);
         levelFailed = false;
         levelComplete = false;
+        currentBoatLoad = 0;
+        dockInRange = false;
+        timerStarted = false;
+        showInstructionPopup = true;
+        capacityWarningUntil = 0f;
     }
 
     private Transform GetGeneratedRoot()
@@ -379,6 +452,29 @@ public class Level2SceneBootstrap : MonoBehaviour
         CreateSolidRect("BeachUnderlay", new Vector3(0f, -5.55f, 0f), new Vector2(34f, 2.8f), new Color(0.93f, 0.84f, 0.67f), -11, root);
         CreateSolidRect("Beach", new Vector3(0f, -4.4f, 0f), new Vector2(26f, 1.8f), new Color(0.93f, 0.84f, 0.67f), -10, root);
         CreateSolidRect("FoamEdge", new Vector3(0f, -3.6f, 0f), new Vector2(26f, 0.18f), new Color(0.94f, 0.98f, 1f), -9, root);
+        BuildDock(root);
+    }
+
+    private void BuildDock(Transform root)
+    {
+        GameObject dock = new GameObject("DockBlock");
+        dock.transform.SetParent(root, false);
+        dock.transform.position = new Vector3(9.35f, -4.95f, 0f);
+        dock.transform.localScale = new Vector3(7.1f, 3.35f, 1f);
+
+        SpriteRenderer dockRenderer = dock.AddComponent<SpriteRenderer>();
+        dockRenderer.sprite = MakeRectSprite(new Color(0.53f, 0.32f, 0.17f, 1f));
+        dockRenderer.sortingOrder = -7;
+
+        GameObject dockZone = new GameObject("DockZone");
+        dockZone.transform.SetParent(dock.transform, false);
+        dockZone.transform.localPosition = new Vector3(-1.8f, 2.15f, 0f);
+
+        BoxCollider2D trigger = dockZone.AddComponent<BoxCollider2D>();
+        trigger.isTrigger = true;
+        trigger.size = new Vector2(4.4f, 4.2f);
+
+        dockZone.AddComponent<Level2DockZone>();
     }
 
     private void TryCreateWaterOverlay(
@@ -859,6 +955,17 @@ public class Level2SceneBootstrap : MonoBehaviour
 
     private void TryFishCollectible()
     {
+        if (!timerStarted || showInstructionPopup)
+        {
+            return;
+        }
+
+        if (currentBoatLoad >= Mathf.Max(1, boatCapacity))
+        {
+            capacityWarningUntil = Time.time + 2.2f;
+            return;
+        }
+
         if (boatObject == null)
         {
             return;
@@ -917,17 +1024,28 @@ public class Level2SceneBootstrap : MonoBehaviour
         {
             trashCollected++;
         }
+        currentBoatLoad++;
 
         Destroy(collectible.gameObject);
 
-        if (!levelComplete && (invasiveCollected + trashCollected) >= totalCollectibles)
-        {
-            levelComplete = true;
-        }
+        EvaluateCompletionState();
     }
 
     public void TryCompleteAtDock()
     {
+        if (!dockInRange || currentBoatLoad <= 0)
+        {
+            return;
+        }
+
+        currentBoatLoad = 0;
+        capacityWarningUntil = 0f;
+        EvaluateCompletionState();
+    }
+
+    public void SetDockInRange(bool inRange)
+    {
+        dockInRange = inRange;
     }
 
     private void TriggerTimeOutFail()
@@ -957,8 +1075,85 @@ public class Level2SceneBootstrap : MonoBehaviour
         };
 
         int seconds = Mathf.CeilToInt(timeRemaining);
-        string timerText = $"Time Left: {seconds}s";
+        string timerText = timerStarted ? $"Time Left: {seconds}s" : "Time Left: READY";
         GUI.Label(new Rect(28f, 20f, 420f, 50f), timerText, style);
+
+        string loadText = $"Load: {currentBoatLoad}/{Mathf.Max(1, boatCapacity)}";
+        GUI.Label(new Rect(28f, 62f, 420f, 46f), loadText, style);
+
+        if (Time.time < capacityWarningUntil)
+        {
+            GUI.Label(new Rect(28f, 146f, 820f, 46f), "Boat full. Go to dock and press E.", style);
+        }
+
+        if (showInstructionPopup)
+        {
+            DrawInstructionPopup();
+        }
+    }
+
+    private void EvaluateCompletionState()
+    {
+        bool allCollected = (invasiveCollected + trashCollected) >= totalCollectibles;
+        if (!allCollected || currentBoatLoad > 0)
+        {
+            return;
+        }
+
+        levelComplete = true;
+        timerStarted = false;
+    }
+
+    private void DrawInstructionPopup()
+    {
+        Color oldColor = GUI.color;
+        GUI.color = new Color(0f, 0f, 0f, 0.72f);
+        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
+
+        float width = Mathf.Min(980f, Screen.width - 80f);
+        float height = 430f;
+        Rect panel = new Rect((Screen.width - width) * 0.5f, (Screen.height - height) * 0.5f, width, height);
+
+        GUI.color = new Color(0.07f, 0.16f, 0.22f, 0.97f);
+        GUI.DrawTexture(panel, Texture2D.whiteTexture);
+        GUI.color = oldColor;
+
+        GUIStyle title = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 38,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.UpperCenter,
+            normal = { textColor = Color.white }
+        };
+
+        GUIStyle body = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 26,
+            wordWrap = true,
+            alignment = TextAnchor.UpperLeft,
+            normal = { textColor = new Color(0.88f, 0.96f, 1f) }
+        };
+
+        GUI.Label(new Rect(panel.x + 24f, panel.y + 20f, panel.width - 48f, 52f), "Level 2 Instructions", title);
+        string text =
+            $"Collect invasive plants and floating trash with F.\n" +
+            $"Boat capacity is {Mathf.Max(1, boatCapacity)} items.\n" +
+            "When full, return to the brown dock on the sand and press E to empty.\n" +
+            "Collect everything before time runs out.";
+        GUI.Label(new Rect(panel.x + 38f, panel.y + 88f, panel.width - 76f, 220f), text, body);
+
+        GUIStyle button = new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 30,
+            fontStyle = FontStyle.Bold
+        };
+
+        Rect continueRect = new Rect(panel.x + (panel.width - 240f) * 0.5f, panel.y + panel.height - 86f, 240f, 52f);
+        if (GUI.Button(continueRect, "Continue", button))
+        {
+            showInstructionPopup = false;
+            timerStarted = true;
+        }
     }
 
     private Sprite LoadSprite(string projectRelativePath)
@@ -1027,6 +1222,24 @@ public class Level2SceneBootstrap : MonoBehaviour
         tex.Apply();
 
         Sprite sprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 16f);
+        spriteCache[key] = sprite;
+        return sprite;
+    }
+
+    private Sprite MakeRectSprite(Color color)
+    {
+        string key = "rect_" + ColorUtility.ToHtmlStringRGBA(color);
+        if (spriteCache.TryGetValue(key, out Sprite cached))
+        {
+            return cached;
+        }
+
+        Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+        tex.SetPixel(0, 0, color);
+        tex.filterMode = FilterMode.Point;
+        tex.Apply();
+
+        Sprite sprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f), 1f);
         spriteCache[key] = sprite;
         return sprite;
     }

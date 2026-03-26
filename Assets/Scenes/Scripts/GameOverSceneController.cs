@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class GameOverSceneController : MonoBehaviour
 {
     public const string SceneName = "GameOver";
-    public const string ScenePath = "Assets/GameOver.unity";
+    public const string ScenePath = "Assets/Scenes/GameOver.unity";
     public const string RetryScenePrefKey = "RetrySceneName";
 
     [SerializeField] private string menuSceneName = "MainMenu";
