@@ -29,8 +29,15 @@ public class BoarAI : MonoBehaviour
     private bool isCharging = false;
     private Vector2 chargeDirection;
 
+    // ADD THIS AT TOP
+    private EnemyHealth enemyHealth;
+
+    [Header("Damage")]
+    public int damage = 1;
+
     void Start()
     {
+        enemyHealth = GetComponent<EnemyHealth>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -64,7 +71,10 @@ public class BoarAI : MonoBehaviour
             if (distanceToPlayer <= attackRange)
             {
                 // Stop moving
-                rb.linearVelocity = Vector2.zero;
+                if (!enemyHealth.IsKnockedBack())
+                    {
+                        rb.linearVelocity = Vector2.zero;
+                    }
                 animator.SetBool("isWalking", false);
 
                 // Try to charge or attack
@@ -85,23 +95,41 @@ public class BoarAI : MonoBehaviour
         }
         else
         {
-            // Out of range — idle
-            rb.linearVelocity = Vector2.zero;
+          if (!enemyHealth.IsKnockedBack())
+                {
+                    rb.linearVelocity = Vector2.zero;
+                }
             animator.SetBool("isWalking", false);
         }
     }
 
-    void MoveTowardPlayer()
+void MoveTowardPlayer()
     {
+        if (enemyHealth != null && enemyHealth.IsKnockedBack()) return;
+
         animator.SetBool("isWalking", true);
         Vector2 direction = (player.position - transform.position).normalized;
         rb.linearVelocity = direction * moveSpeed;
     }
 
-    void Attack()
+void Attack()
     {
-        //attackTimer = attackCooldown;
+        attackTimer = attackCooldown;
         animator.SetTrigger("Attack");
+
+        // Check if player is still in range
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= attackRange)
+        {
+            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+
+            if (playerHealth != null)
+            {
+                Vector2 direction = (player.position - transform.position).normalized;
+                playerHealth.TakeDamage(damage, direction);
+            }
+        }
     }
 
     void StartCharge()
@@ -113,8 +141,10 @@ public class BoarAI : MonoBehaviour
         animator.SetTrigger("Charge"); // make sure you have a Charge animation
     }
 
-    void HandleCharge()
+void HandleCharge()
     {
+        if (enemyHealth != null && enemyHealth.IsKnockedBack()) return;
+
         chargeDurationTimer -= Time.deltaTime;
         rb.linearVelocity = chargeDirection * chargeSpeed;
 
@@ -141,4 +171,33 @@ public class BoarAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
+
+
+
+
+    public void DealDamage()
+    {
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= attackRange)
+        {
+            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+
+            if (playerHealth != null)
+            {
+                // direction FROM boar TO player
+                Vector2 direction = (player.position - transform.position).normalized;
+
+                playerHealth.TakeDamage(damage, direction);
+                Debug.Log("Boar hit player!");
+            }
+        }
+    }
+    
+
+
+
+
 }
+
+

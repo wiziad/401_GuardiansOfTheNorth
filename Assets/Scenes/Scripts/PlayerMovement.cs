@@ -28,10 +28,13 @@ public class PlayerController : MonoBehaviour
     // Direction (IMPORTANT FIX)
     private Vector2 lastDirection = Vector2.right;
 
+    private PlayerHealth playerHealth;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     void Update()
@@ -87,51 +90,49 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate()
-    {
-        if (!isDashing)
         {
-            rb.linearVelocity = new Vector2(moveX * moveSpeed, rb.linearVelocity.y);
+            if (!isDashing && !playerHealth.IsKnockedBack())
+            {
+                rb.linearVelocity = new Vector2(moveX * moveSpeed, rb.linearVelocity.y);
+            }
         }
-    }
 
     // ---------------- ATTACK FUNCTION ----------------
-    // void Attack()
-    // {
-    //     Debug.Log("ATTACK");
-
-    //     // Force correct layer detection (no inspector issues)
-    //     int enemyLayerMask = LayerMask.GetMask("Enemy");
-
-    //     Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(
-    //         attackPoint.position,
-    //         attackRange,
-    //         enemyLayerMask
-    //     );
-
-    //     Debug.Log("Enemies detected: " + hitEnemies.Length);
-
-    //     foreach (Collider2D enemy in hitEnemies)
-    //     {
-    //         Debug.Log("Hit " + enemy.name);
-    //     }
-    // }
-
-    void Attack()
-{
-    Debug.Log("ATTACK");
-
-    Collider2D[] hits = Physics2D.OverlapCircleAll(
-        attackPoint.position,
-        attackRange
-    );
-
-    Debug.Log("Total hits: " + hits.Length);
-
-    foreach (Collider2D hit in hits)
+  
+void Attack()
     {
-        Debug.Log("Found: " + hit.name + " | Layer: " + LayerMask.LayerToName(hit.gameObject.layer));
+        Debug.Log("ATTACK");
+
+        animator.SetFloat("MoveX", lastDirection.x);
+        animator.SetFloat("MoveY", lastDirection.y);
+        animator.SetTrigger("Attack");
     }
-}
+
+    // ---------------- DEAL DAMAGE FUNCTION ----------------
+public void DealDamage()
+    {
+        Debug.Log("DEAL DAMAGE FRAME");
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemyObj in enemies)
+        {
+            float distance = Mathf.Abs(transform.position.x - enemyObj.transform.position.x);
+
+            if (distance <= attackRange)
+            {
+                EnemyHealth enemy = enemyObj.GetComponent<EnemyHealth>();
+
+                if (enemy != null)
+                {
+                    Vector2 direction = (enemyObj.transform.position - transform.position).normalized;
+                    enemy.TakeDamage(1, direction);
+
+                    Debug.Log("Hit enemy: " + enemyObj.name);
+                }
+            }
+        }
+    }
 
     // ---------------- DASH ----------------
     IEnumerator Dash()

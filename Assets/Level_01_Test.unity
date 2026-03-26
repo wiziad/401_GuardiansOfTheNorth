@@ -164,9 +164,10 @@ GameObject:
   - component: {fileID: 487246066}
   - component: {fileID: 487246068}
   - component: {fileID: 487246067}
+  - component: {fileID: 487246069}
   m_Layer: 0
   m_Name: WildBoar_Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,6 +289,7 @@ MonoBehaviour:
   chargeChance: 0.3
   chargeCooldown: 4
   moveSpeed: 2
+  damage: 1
 --- !u!70 &487246067
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -352,6 +354,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 6
+--- !u!114 &487246069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487246062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c85b37259e8b64e803969a60d45296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 3
+  knockbackForce: 5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,6 +741,7 @@ GameObject:
   - component: {fileID: 1730688384}
   - component: {fileID: 1730688383}
   - component: {fileID: 1730688385}
+  - component: {fileID: 1730688386}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -844,7 +861,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -918,8 +935,22 @@ MonoBehaviour:
   jumpForce: 8
   dashForce: 10
   dashTime: 0.2
-  attackRange: 1
+  attackRange: 2.5
   attackPoint: {fileID: 290381461}
+--- !u!114 &1730688386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730688379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17395ac9b8342394eafde3db7ac0b503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 5
+  knockbackForce: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
