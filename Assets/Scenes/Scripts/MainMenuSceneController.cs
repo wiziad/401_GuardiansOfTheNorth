@@ -24,7 +24,7 @@ public class SimpleMenuArtBuilder : MonoBehaviour
     [SerializeField] private Color backTint = new(1f, 1f, 1f, 1f);
     [SerializeField] private Sprite forestOverlaySprite;
     [SerializeField] private Color forestOverlayTint = new(1f, 1f, 1f, 0f);
-    [SerializeField] private string gameSceneName = "Level_01_Test";
+    [SerializeField] private string gameSceneName = "GameIntro";
 
     [Header("Workflow")]
     [SerializeField] private bool applyPropSiblingIndex = false;
