@@ -24,6 +24,9 @@ public class Level2SceneBootstrap : MonoBehaviour
     [SerializeField] private bool keepManualSceneObjectsVisible = true;
 
     [Header("Asset Paths")]
+    [SerializeField] private Sprite boatSpriteAsset;
+    [SerializeField] private Sprite fallbackBoatSpriteAsset;
+    [SerializeField] private Sprite riderSpriteAsset;
     [SerializeField] private string boatResourcePath = "RuntimeSprites/Boat";
     [SerializeField] private string fallbackBoatResourcePath = "RuntimeSprites/Boat2";
     [SerializeField] private string fallbackPlayerResourcePath = "RuntimeSprites/Idle_Down";
@@ -39,6 +42,11 @@ public class Level2SceneBootstrap : MonoBehaviour
     [SerializeField] private int boatCapacity = 5;
     [SerializeField] private Vector2 waterMin = new Vector2(-7.4f, -3.1f);
     [SerializeField] private Vector2 waterMax = new Vector2(7.4f, 3.6f);
+
+    [Header("Visual Tuning")]
+    [SerializeField] private float boatTargetWidth = 2.24f;
+    [SerializeField] private float riderTargetHeightInBoat = 1.05f;
+    [SerializeField] private float riderOffsetY = 0.30f;
 
     [SerializeField] private Sprite[] invasivePaths =
     {
@@ -541,10 +549,10 @@ public class Level2SceneBootstrap : MonoBehaviour
     private void BuildBoat(bool editPreview)
     {
         Transform root = GetGeneratedRoot();
-        Sprite boatSprite = LoadSprite(boatResourcePath, boatPath);
+        Sprite boatSprite = boatSpriteAsset != null ? boatSpriteAsset : LoadSprite(boatResourcePath, boatPath);
         if (boatSprite == null)
         {
-            boatSprite = LoadSprite(fallbackBoatResourcePath, fallbackBoatPath);
+            boatSprite = fallbackBoatSpriteAsset != null ? fallbackBoatSpriteAsset : LoadSprite(fallbackBoatResourcePath, fallbackBoatPath);
             if (boatSprite == null)
             {
                 Debug.LogWarning("Level2: Boat sprite missing. Using generated fallback boat.", this);
@@ -577,31 +585,19 @@ public class Level2SceneBootstrap : MonoBehaviour
         GameObject boatVisual = new GameObject("BoatVisual");
         boatVisual.transform.SetParent(boatObject.transform, false);
         boatVisual.transform.localPosition = Vector3.zero;
-        boatVisual.transform.localScale = new Vector3(1.12f, 1.12f, 1f);
+        boatVisual.transform.localScale = Vector3.one;
         SpriteRenderer boatRenderer = boatVisual.AddComponent<SpriteRenderer>();
         boatRenderer.sprite = boatSprite != null ? boatSprite : MakeFallbackBoatSprite();
         boatRenderer.sortingOrder = 8;
+        FitSpriteWidth(boatVisual.transform, boatRenderer, boatTargetWidth);
 
         if (playerVisual == null)
         {
             playerVisual = FindPlayerVisual();
         }
 
-        if (editPreview)
-        {
-            if (playerVisual != null)
-            {
-                AttachRiderToBoat(playerVisual, boatObject.transform);
-            }
-            else
-            {
-                CreatePreviewPlayer(boatObject.transform);
-            }
-            EnsureSingleBoatRider(boatObject.transform);
-            return;
-        }
-
-        if (playerVisual != null)
+        bool canAttachExistingPlayer = playerVisual != null && HasUsableSprite(playerVisual);
+        if (canAttachExistingPlayer)
         {
             AttachRiderToBoat(playerVisual, boatObject.transform);
         }
@@ -673,15 +669,18 @@ public class Level2SceneBootstrap : MonoBehaviour
 
     private void CreatePreviewPlayer(Transform parent)
     {
-        Sprite previewSprite = null;
+        Sprite previewSprite = riderSpriteAsset;
 
-        PlayerController existing = FindObjectOfType<PlayerController>();
-        if (existing != null)
+        if (previewSprite == null)
         {
-            SpriteRenderer sr = existing.GetComponent<SpriteRenderer>();
-            if (sr != null && sr.sprite != null)
+            PlayerController existing = FindObjectOfType<PlayerController>();
+            if (existing != null)
             {
-                previewSprite = sr.sprite;
+                SpriteRenderer sr = existing.GetComponent<SpriteRenderer>();
+                if (sr != null && sr.sprite != null)
+                {
+                    previewSprite = sr.sprite;
+                }
             }
         }
 
@@ -715,6 +714,17 @@ public class Level2SceneBootstrap : MonoBehaviour
         AttachRiderToBoat(preview, parent);
     }
 
+    private bool HasUsableSprite(GameObject rider)
+    {
+        if (rider == null)
+        {
+            return false;
+        }
+
+        SpriteRenderer renderer = rider.GetComponent<SpriteRenderer>();
+        return renderer != null && renderer.sprite != null;
+    }
+
     private void AttachRiderToBoat(GameObject rider, Transform boatParent)
     {
         if (rider == null || boatParent == null)
@@ -723,7 +733,7 @@ public class Level2SceneBootstrap : MonoBehaviour
         }
 
         rider.transform.SetParent(boatParent, false);
-        rider.transform.localPosition = new Vector3(0f, 0.42f, 0f);
+        rider.transform.localPosition = new Vector3(0f, riderOffsetY, 0f);
 
         SpriteRenderer renderer = rider.GetComponent<SpriteRenderer>();
         if (renderer == null || renderer.sprite == null)
@@ -738,13 +748,30 @@ public class Level2SceneBootstrap : MonoBehaviour
         }
         else
         {
-            float targetHeightInBoat = 1.22f;
-            float scale = Mathf.Clamp(targetHeightInBoat / spriteHeight, 0.55f, 3.8f);
+            float targetHeightInBoat = Mathf.Max(0.25f, riderTargetHeightInBoat);
+            float scale = Mathf.Clamp(targetHeightInBoat / spriteHeight, 0.4f, 6f);
             rider.transform.localScale = new Vector3(scale, scale, 1f);
         }
 
         renderer.enabled = true;
         renderer.sortingOrder = 7;
+    }
+
+    private void FitSpriteWidth(Transform target, SpriteRenderer renderer, float desiredWidth)
+    {
+        if (target == null || renderer == null || renderer.sprite == null || desiredWidth <= 0.01f)
+        {
+            return;
+        }
+
+        float currentWidth = renderer.sprite.bounds.size.x;
+        if (currentWidth <= 0.001f)
+        {
+            return;
+        }
+
+        float uniformScale = desiredWidth / currentWidth;
+        target.localScale = new Vector3(uniformScale, uniformScale, 1f);
     }
 
     private Sprite LoadFirstVisibleSprite(string resourcesPath, string editorAssetPath)
