@@ -494,7 +494,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -70, y: -115}
-  m_SizeDelta: {x: 435, y: 215}
+  m_SizeDelta: {x: 455, y: 215}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184517207
 MonoBehaviour:
@@ -764,6 +764,7 @@ GameObject:
   - component: {fileID: 310848244}
   - component: {fileID: 310848243}
   - component: {fileID: 310848242}
+  - component: {fileID: 310848246}
   m_Layer: 5
   m_Name: AlbertaPin
   m_TagString: Untagged
@@ -803,9 +804,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce570af4cb93024ea783b82913596f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PinHover
-  normalScale: 5.1
-  hoverScale: 6.5
-  speed: 10
 --- !u!114 &310848243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -888,6 +886,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 310848240}
   m_CullTransparentMesh: 1
+--- !u!114 &310848246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310848240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fbc6dc387f104ce190e24665816f94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PinHover
+  normalScale: 5.4
+  hoverScale: 6.9
+  speed: 10
 --- !u!1 &400186241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,6 +1893,7 @@ GameObject:
   - component: {fileID: 888638771}
   - component: {fileID: 888638770}
   - component: {fileID: 888638769}
+  - component: {fileID: 888638773}
   m_Layer: 5
   m_Name: QuebecPin
   m_TagString: Untagged
@@ -1896,7 +1910,7 @@ RectTransform:
   m_GameObject: {fileID: 888638767}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.3, y: 5.3, z: 5.3}
+  m_LocalScale: {x: 4.98, y: 4.98, z: 4.98}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 271234735}
@@ -1904,8 +1918,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1351.9, y: 368}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: 1323, y: 368}
+  m_SizeDelta: {x: 29, y: 39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &888638769
 MonoBehaviour:
@@ -1919,9 +1933,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce570af4cb93024ea783b82913596f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PinHover
-  normalScale: 5.1
-  hoverScale: 6.5
-  speed: 10
 --- !u!114 &888638770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1986,7 +1997,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8300880620034703836, guid: abd6726da4a7c7043a3e55b55f178acf, type: 3}
+  m_Sprite: {fileID: -4791226682997895546, guid: d28a804f61d451c43b27dcc597506176, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2004,6 +2015,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 888638767}
   m_CullTransparentMesh: 1
+--- !u!114 &888638773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888638767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fbc6dc387f104ce190e24665816f94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PinHover
+  normalScale: 5.1
+  hoverScale: 6.3
+  speed: 10
 --- !u!1 &1062634599
 GameObject:
   m_ObjectHideFlags: 0
@@ -2063,7 +2089,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'LEVEL 1:
 
-    Warrior of the Waters'
+    Beneath the Surface'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   m_sharedMaterial: {fileID: -5075745181338888503, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
@@ -2155,6 +2181,7 @@ GameObject:
   - component: {fileID: 1081257724}
   - component: {fileID: 1081257723}
   - component: {fileID: 1081257722}
+  - component: {fileID: 1081257726}
   m_Layer: 0
   m_Name: canada map detailed-1.png_0
   m_TagString: Untagged
@@ -2174,11 +2201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2ba99470a5d3484f84a85772adb986b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapZoom
-  mapRect: {fileID: 1203352240}
-  zoomScale: 3.91
-  zoomDuration: 0.6
-  albertaFocusPoint: {x: 0.28, y: 0.35}
-  ontarioFocusPoint: {x: 0.6, y: 0.3}
 --- !u!95 &1081257723
 Animator:
   serializedVersion: 7
@@ -2275,6 +2297,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1081257726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081257721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a385b81c5cca40a594d6e7ffae624dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapZoom
+  mapRect: {fileID: 1203352240}
+  zoomScale: 3.91
+  zoomDuration: 0.6
+  albertaFocusPoint: {x: 0.28, y: 0.35}
+  ontarioFocusPoint: {x: 0.6, y: 0.3}
 --- !u!1 &1203352239
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,120 +2526,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1205274955}
   m_CullTransparentMesh: 1
---- !u!1 &1356899997
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1356900000}
-  - component: {fileID: 1356899999}
-  - component: {fileID: 1356899998}
-  m_Layer: 0
-  m_Name: ocean_spritesheet_0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!95 &1356899998
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356899997}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8f842671475e00e4b8416fb3a6688168, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!212 &1356899999
-SpriteRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356899997}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -1
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: -7043376409670164201, guid: cd4fe6e8fa0e8e446901f8a18e506251, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 10.25, y: 6.4}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
---- !u!4 &1356900000
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356899997}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.55, y: 1.55, z: 1.55}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1373667710
 GameObject:
   m_ObjectHideFlags: 0
@@ -2626,17 +2551,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373667710}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1598750954}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -80}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 15.25}
-  m_SizeDelta: {x: 0, y: 10.499999}
+  m_AnchoredPosition: {x: -34.66, y: -11.75}
+  m_SizeDelta: {x: -19.32, y: -6.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1373667712
 MonoBehaviour:
@@ -2687,8 +2612,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 9.15
-  m_fontSizeBase: 9.15
+  m_fontSize: 23
+  m_fontSizeBase: 23
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2874,6 +2799,7 @@ GameObject:
   - component: {fileID: 1598750957}
   - component: {fileID: 1598750956}
   - component: {fileID: 1598750955}
+  - component: {fileID: 1598750959}
   m_Layer: 5
   m_Name: OntarioPin
   m_TagString: Untagged
@@ -2888,18 +2814,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598750953}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.6427876, w: 0.7660445}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.3, y: 5.3, z: 5.3}
+  m_LocalScale: {x: 2.28, y: 2.28, z: 2.28}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1373667711}
   m_Father: {fileID: 481013346}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 80}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 1095, y: 355}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 31, y: 73}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1598750955
 MonoBehaviour:
@@ -2913,9 +2839,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce570af4cb93024ea783b82913596f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PinHover
-  normalScale: 5.1
-  hoverScale: 6.5
-  speed: 10
 --- !u!114 &1598750956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2980,7 +2903,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8300880620034703836, guid: abd6726da4a7c7043a3e55b55f178acf, type: 3}
+  m_Sprite: {fileID: 3880318848749474927, guid: 5104b96d904254867a8710fcb44b3690, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2998,6 +2921,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598750953}
   m_CullTransparentMesh: 1
+--- !u!114 &1598750959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598750953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fbc6dc387f104ce190e24665816f94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PinHover
+  normalScale: 2.44
+  hoverScale: 2.81
+  speed: 10
 --- !u!1 &1610043559
 GameObject:
   m_ObjectHideFlags: 0
@@ -3290,6 +3228,7 @@ GameObject:
   - component: {fileID: 1899839456}
   - component: {fileID: 1899839455}
   - component: {fileID: 1899839454}
+  - component: {fileID: 1899839458}
   m_Layer: 0
   m_Name: canada map detailed-1.png_0 (1)
   m_TagString: Untagged
@@ -3309,11 +3248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2ba99470a5d3484f84a85772adb986b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapZoom
-  mapRect: {fileID: 1203352240}
-  zoomScale: 3.91
-  zoomDuration: 0.6
-  albertaFocusPoint: {x: 0.28, y: 0.35}
-  ontarioFocusPoint: {x: 0.6, y: 0.3}
 --- !u!95 &1899839455
 Animator:
   serializedVersion: 7
@@ -3410,6 +3344,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1899839458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899839453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a385b81c5cca40a594d6e7ffae624dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapZoom
+  mapRect: {fileID: 1203352240}
+  zoomScale: 3.91
+  zoomDuration: 0.6
+  albertaFocusPoint: {x: 0.28, y: 0.35}
+  ontarioFocusPoint: {x: 0.6, y: 0.3}
 --- !u!1 &1911348267
 GameObject:
   m_ObjectHideFlags: 0
@@ -3581,7 +3532,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 55}
+  m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1973240062
@@ -3606,7 +3557,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'LEVEL 3:
 
-    Beneath the Surface'
+    Warrior of the Waters'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   m_sharedMaterial: {fileID: -5075745181338888503, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
@@ -3696,6 +3647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2065417949}
   - component: {fileID: 2065417950}
+  - component: {fileID: 2065417951}
   m_Layer: 0
   m_Name: MapManager2
   m_TagString: Untagged
@@ -3730,13 +3682,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 827667f4b19c33e4db388ceefcf43f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager2
-  mapZoom: {fileID: 1081257722}
+--- !u!114 &2065417951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065417947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69923e1d4fe44ef39d6de74b6bf1604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapManager2
+  mapZoom: {fileID: 1081257726}
   albertaPin: {fileID: 310848243}
   ontarioPin: {fileID: 1598750956}
   quebecPin: {fileID: 888638770}
   levelPanel: {fileID: 34707093}
   levelTitleText: {fileID: 1062634601}
-  levelDescriptionText: {fileID: 2138796118}
+  levelDescriptionText: {fileID: 0}
   playButton: {fileID: 48372066}
   closePanelButton: {fileID: 670100369}
   completedPanel: {fileID: 289927331}
@@ -3744,6 +3708,120 @@ MonoBehaviour:
   lockedPanel2: {fileID: 184517205}
   closeLockedButton2: {fileID: 1538505412}
   clickBlocker: {fileID: 0}
+--- !u!1 &2095308052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2095308055}
+  - component: {fileID: 2095308054}
+  - component: {fileID: 2095308053}
+  m_Layer: 0
+  m_Name: ocean_spritesheet_0 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!95 &2095308053
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095308052}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1f36f4a84b8f39544996b0fa9b0b52af, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!212 &2095308054
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095308052}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -1
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: -7043376409670164201, guid: cd4fe6e8fa0e8e446901f8a18e506251, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 10.25, y: 6.4}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!4 &2095308055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095308052}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.7499999, y: 1.7499999, z: 1.7499999}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2138796116
 GameObject:
   m_ObjectHideFlags: 0
@@ -3891,4 +3969,4 @@ SceneRoots:
   - {fileID: 1081257725}
   - {fileID: 1899839457}
   - {fileID: 2065417949}
-  - {fileID: 1356900000}
+  - {fileID: 2095308055}
