@@ -446,13 +446,45 @@ public class Level2SceneBootstrap : MonoBehaviour
     {
         Transform root = GetGeneratedRoot();
         // Overscan to remove border.
-        CreateSolidRect("WaterBase", new Vector3(0f, 0f, 0f), new Vector2(26f, 16f), new Color(0.13f, 0.69f, 0.84f), -20, root);
-        TryCreateWaterOverlay("WaterOverlay_A", new Vector3(0f, 0.85f, 0f), new Vector2(30f, 6.6f), new Color(1f, 1f, 1f, 0.42f), 0.22f, 10f, -19, root);
-        TryCreateWaterOverlay("WaterOverlay_B", new Vector3(0f, 0.45f, 0f), new Vector2(30f, 6.0f), new Color(0.88f, 0.95f, 1f, 0.32f), -0.18f, 10f, -18, root);
-        CreateSolidRect("BeachUnderlay", new Vector3(0f, -5.55f, 0f), new Vector2(34f, 2.8f), new Color(0.93f, 0.84f, 0.67f), -11, root);
-        CreateSolidRect("Beach", new Vector3(0f, -4.4f, 0f), new Vector2(26f, 1.8f), new Color(0.93f, 0.84f, 0.67f), -10, root);
-        CreateSolidRect("FoamEdge", new Vector3(0f, -3.6f, 0f), new Vector2(26f, 0.18f), new Color(0.94f, 0.98f, 1f), -9, root);
+        CreateSolidRect("WaterBase", new Vector3(0f, 0f, 0f), new Vector2(26f, 16f), new Color(0.05f, 0.16f, 0.33f), -20, root);
+        TryCreateWaterOverlay("WaterOverlay_A", new Vector3(0f, 0.85f, 0f), new Vector2(30f, 6.6f), new Color(0.55f, 0.72f, 0.92f, 0.30f), 0.22f, 10f, -19, root);
+        TryCreateWaterOverlay("WaterOverlay_B", new Vector3(0f, 0.45f, 0f), new Vector2(30f, 6.0f), new Color(0.35f, 0.55f, 0.78f, 0.25f), -0.18f, 10f, -18, root);
+        CreateSolidRect("GrassUnderlay", new Vector3(0f, -5.55f, 0f), new Vector2(34f, 2.8f), new Color(0.12f, 0.38f, 0.17f), -11, root);
+        CreateSolidRect("Grass", new Vector3(0f, -4.4f, 0f), new Vector2(26f, 1.8f), new Color(0.15f, 0.47f, 0.20f), -10, root);
+        CreateSolidRect("ShoreEdge", new Vector3(0f, -3.6f, 0f), new Vector2(26f, 0.18f), new Color(0.82f, 0.90f, 0.78f), -9, root);
+        BuildBushLayer(root);
         BuildDock(root);
+    }
+
+    private void BuildBushLayer(Transform root)
+    {
+        // Bushy depth across the lower grass band.
+        CreateBush("BushA", new Vector3(-8.2f, -4.45f, 0f), new Vector3(2.1f, 1.0f, 1f), root);
+        CreateBush("BushB", new Vector3(-5.9f, -4.52f, 0f), new Vector3(1.7f, 0.9f, 1f), root);
+        CreateBush("BushC", new Vector3(-3.1f, -4.42f, 0f), new Vector3(2.3f, 1.1f, 1f), root);
+        CreateBush("BushD", new Vector3(-0.4f, -4.55f, 0f), new Vector3(1.9f, 0.9f, 1f), root);
+        CreateBush("BushE", new Vector3(2.9f, -4.46f, 0f), new Vector3(2.2f, 1.0f, 1f), root);
+        CreateBush("BushF", new Vector3(6.1f, -4.52f, 0f), new Vector3(1.8f, 0.95f, 1f), root);
+    }
+
+    private void CreateBush(string name, Vector3 pos, Vector3 scale, Transform root)
+    {
+        GameObject bush = new GameObject(name);
+        bush.transform.SetParent(root, false);
+        bush.transform.position = pos;
+        bush.transform.localScale = scale;
+
+        SpriteRenderer back = bush.AddComponent<SpriteRenderer>();
+        back.sprite = MakeCircleSprite(new Color(0.10f, 0.34f, 0.15f, 1f));
+        back.sortingOrder = -8;
+
+        GameObject front = new GameObject("Front");
+        front.transform.SetParent(bush.transform, false);
+        front.transform.localPosition = new Vector3(0.26f, -0.04f, 0f);
+        front.transform.localScale = new Vector3(0.72f, 0.72f, 1f);
+        SpriteRenderer frontRenderer = front.AddComponent<SpriteRenderer>();
+        frontRenderer.sprite = MakeCircleSprite(new Color(0.18f, 0.52f, 0.21f, 1f));
+        frontRenderer.sortingOrder = -7;
     }
 
     private void BuildDock(Transform root)
