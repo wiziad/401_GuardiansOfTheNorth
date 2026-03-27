@@ -133,19 +133,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789036839289190853, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2789036839289190853, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2789036839289190853, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2789036839289190853, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2789036839289190853, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: m_AnchorMin.x
@@ -226,6 +226,14 @@ PrefabInstance:
     - target: {fileID: 6120980647735266318, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: m_Name
       value: ScrollCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6946519659706236741, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
+      propertyPath: m_lineSpacing
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294583490361433033, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
