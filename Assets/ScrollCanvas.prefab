@@ -436,7 +436,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: Back to Map
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a61eb017a1104e499954c3b0b3c1f59, type: 2}
   m_sharedMaterial: {fileID: -4292016884198452166, guid: 9a61eb017a1104e499954c3b0b3c1f59, type: 2}
@@ -765,3 +765,5 @@ MonoBehaviour:
   levelContextText: {fileID: 6946519659706236741}
   scrollPanel: {fileID: 3936943840862159431}
   levelData: {fileID: 11400000, guid: 480b02a7d0f53094cb8e9d1e595d78af, type: 2}
+  nextSceneName: Level_01_Test
+  fallbackScenePath: 
