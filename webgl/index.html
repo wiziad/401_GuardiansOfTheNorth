@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guardians of the North WebGL</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f172a;
+        --panel: #111827;
+        --text: #e5e7eb;
+        --muted: #94a3b8;
+        --accent: #38bdf8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at top, rgba(56, 189, 248, 0.2), transparent 35%),
+          linear-gradient(180deg, #020617 0%, var(--bg) 100%);
+        font-family: Arial, sans-serif;
+        color: var(--text);
+      }
+
+      main {
+        width: min(680px, calc(100vw - 32px));
+        padding: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 20px;
+        background: rgba(17, 24, 39, 0.88);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 4vw, 40px);
+      }
+
+      p {
+        margin: 0 0 14px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      code {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>WebGL package not added yet</h1>
+      <p>
+        Replace this placeholder with the Unity WebGL export files in this folder.
+      </p>
+      <p>
+        Expected structure: <code>webgl/index.html</code>, <code>webgl/Build/*</code>,
+        and <code>webgl/TemplateData/*</code>.
+      </p>
+      <p>
+        Once those files are committed and pushed, Vercel will redeploy automatically.
+      </p>
+    </main>
+  </body>
+  </html>
