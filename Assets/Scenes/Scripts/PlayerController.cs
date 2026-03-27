@@ -30,6 +30,12 @@ public class PlayerController : MonoBehaviour
     private Coroutine energyFlashCoroutine;
     private Coroutine healthFlashCoroutine;
 
+    [Header("Audio")]
+    public AudioClip attackSound;
+    public AudioClip jumpSound;
+    public AudioClip dashSound;
+    private AudioSource audioSource;
+
     // Direction
     private Vector2 lastDirection = Vector2.right;
 
@@ -41,9 +47,21 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        // Get required components
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerHealth = GetComponent<PlayerHealth>();
+        audioSource = GetComponent<AudioSource>();
+
+        // Validate that all required components are present
+        if (rb == null)
+            Debug.LogError($"PlayerController ({gameObject.name}): Rigidbody2D component not found!");
+        if (animator == null)
+            Debug.LogError($"PlayerController ({gameObject.name}): Animator component not found! This will cause crashes in OnCollisionEnter2D.");
+        if (playerHealth == null)
+            Debug.LogError($"PlayerController ({gameObject.name}): PlayerHealth component not found!");
+        if (attackPoint == null)
+            Debug.LogError($"PlayerController ({gameObject.name}): attackPoint is not assigned in the Inspector!");
     }
 
     void Update()
@@ -82,6 +100,9 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             animator.SetBool("IsJumping", true);
+
+            if (audioSource != null && jumpSound != null)
+                audioSource.PlayOneShot(jumpSound);
             isGrounded = false;
         }
 
@@ -158,6 +179,9 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("MoveX", lastDirection.x);
         animator.SetFloat("MoveY", lastDirection.y);
         animator.SetTrigger("Attack");
+
+        if (audioSource != null && attackSound != null)
+            audioSource.PlayOneShot(attackSound);
     }
     
     // ADD this coroutine anywhere in PlayerController:
@@ -226,6 +250,9 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         animator.SetBool("IsDashing", true);
 
+        if (audioSource != null && dashSound != null)
+            audioSource.PlayOneShot(dashSound);
+
         rb.linearVelocity = lastDirection * dashForce;
 
         yield return new WaitForSeconds(dashTime);
@@ -237,10 +264,32 @@ public class PlayerController : MonoBehaviour
     // ---------------- GROUND CHECK ----------------
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // Defensive null checks to prevent NullReferenceException
+        if (collision == null)
+        {
+            Debug.LogError("OnCollisionEnter2D: collision parameter is null!");
+            return;
+        }
+
+        if (collision.gameObject == null)
+        {
+            Debug.LogError("OnCollisionEnter2D: collision.gameObject is null!");
+            return;
+        }
+
+        // Check if animator exists (critical for this scene)
+        if (animator == null)
+        {
+            Debug.LogError($"OnCollisionEnter2D ({gameObject.name}): animator is null! Player GameObject is missing Animator component or it wasn't initialized. Check the Inspector.");
+            return;
+        }
+
+        // Now safely check the tag and set ground state
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
             animator.SetBool("IsJumping", false);
+            Debug.Log($"{gameObject.name} landed on ground.");
         }
     }
 

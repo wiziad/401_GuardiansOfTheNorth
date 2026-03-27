@@ -35,12 +35,23 @@ public class BoarAI : MonoBehaviour
     [Header("Damage")]
     public int damage = 1;
 
+    [Header("Audio")]
+    public AudioClip attackSound;
+    public AudioClip introSound;  // plays once at the beginning
+    public float introSoundVolume = 1f;  // volume multiplier (0-1, default 1f = max)
+    private AudioSource audioSource;
+
     void Start()
     {
         enemyHealth = GetComponent<EnemyHealth>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+
+        // Play intro sound once at the beginning
+        if (audioSource != null && introSound != null)
+            audioSource.PlayOneShot(introSound, introSoundVolume);
 
         // Auto-find player if not assigned
         if (player == null)
@@ -128,6 +139,9 @@ void Attack()
             {
                 Vector2 direction = (player.position - transform.position).normalized;
                 playerHealth.TakeDamage(damage, direction);
+
+                if (audioSource != null && attackSound != null)
+                    audioSource.PlayOneShot(attackSound);
             }
         }
     }

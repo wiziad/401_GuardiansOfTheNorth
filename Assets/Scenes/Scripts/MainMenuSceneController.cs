@@ -10,8 +10,10 @@ using UnityEngine.UI;
 using TMPro;
 
 [ExecuteAlways]
-public class SimpleMenuArtBuilder : MonoBehaviour
+public class MainMenuSceneController : MonoBehaviour
 {
+    [SerializeField] public AudioClip buttonClickSound;
+
     [Header("Auto Build")]
     [SerializeField] private bool rebuildOnEnable = true;
     [SerializeField] private bool rebuildInEditMode = true;
@@ -101,19 +103,6 @@ public class SimpleMenuArtBuilder : MonoBehaviour
     private Button signupSubmitButton;
     private bool authBusy;
 
-    [Serializable]
-    public class UiProp
-    {
-        public string id = "Prop";
-        public Sprite sprite;
-        public Vector2 anchor = new(0.5f, 0.5f);
-        public Vector2 anchoredPosition = Vector2.zero;
-        public Vector2 size = new(160f, 160f);
-        public Color color = Color.white;
-        public int siblingIndex = 10;
-        public bool preserveAspect = true;
-    }
-
     private void OnEnable()
     {
         TryAutoRebuild();
@@ -121,6 +110,15 @@ public class SimpleMenuArtBuilder : MonoBehaviour
 
     private void Start()
     {
+        // Initialize button click sound for all buttons in this scene
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+        
+        ButtonClickSoundManager.SetAudioSource(audioSource);
+        if (buttonClickSound != null)
+            ButtonClickSoundManager.InitializeButtonClickSound(buttonClickSound);
+
         if (!rebuildOnEnable)
         {
             TryAutoRebuild();
@@ -158,6 +156,19 @@ public class SimpleMenuArtBuilder : MonoBehaviour
         BuildLogo(canvasRoot);
         BuildButtons(canvasRoot);
         BuildAuthPopups(canvasRoot);
+        
+        // Setup button click sounds after all buttons are built
+        SetupButtonClickSounds(canvasRoot);
+    }
+
+    private void SetupButtonClickSounds(RectTransform parent)
+    {
+        Button[] allButtons = parent.GetComponentsInChildren<Button>();
+        foreach (Button button in allButtons)
+        {
+            if (button.GetComponent<UIButtonClickSound>() == null)
+                button.gameObject.AddComponent<UIButtonClickSound>();
+        }
     }
 
     [ContextMenu("Capture Props From Scene")]
@@ -1495,138 +1506,5 @@ public class SimpleMenuArtBuilder : MonoBehaviour
     {
         T c = go.GetComponent<T>();
         return c != null ? c : go.AddComponent<T>();
-    }
-}
-
-public class CurvedTMPText : MonoBehaviour
-{
-    [SerializeField] private float curveAmount = 24f;
-    private TextMeshProUGUI text;
-
-    public void SetCurveAmount(float value)
-    {
-        curveAmount = value;
-    }
-
-    public void RefreshNow()
-    {
-        if (text == null)
-        {
-            text = GetComponent<TextMeshProUGUI>();
-        }
-
-        if (text == null)
-        {
-            return;
-        }
-
-        text.ForceMeshUpdate();
-
-        TMP_TextInfo textInfo = text.textInfo;
-        float width = text.rectTransform.rect.width;
-        if (width <= 0f)
-        {
-            return;
-        }
-
-        for (int i = 0; i < textInfo.characterCount; i++)
-        {
-            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
-            if (!charInfo.isVisible)
-            {
-                continue;
-            }
-
-            int materialIndex = charInfo.materialReferenceIndex;
-            int vertexIndex = charInfo.vertexIndex;
-            Vector3[] vertices = textInfo.meshInfo[materialIndex].vertices;
-
-            float centerX = (vertices[vertexIndex + 0].x + vertices[vertexIndex + 2].x) * 0.5f;
-            float normalized = Mathf.InverseLerp(-width * 0.5f, width * 0.5f, centerX) * 2f - 1f;
-            float yOffset = -(normalized * normalized) * curveAmount + curveAmount;
-
-            Vector3 offset = new Vector3(0f, yOffset, 0f);
-            vertices[vertexIndex + 0] += offset;
-            vertices[vertexIndex + 1] += offset;
-            vertices[vertexIndex + 2] += offset;
-            vertices[vertexIndex + 3] += offset;
-        }
-
-        for (int i = 0; i < textInfo.meshInfo.Length; i++)
-        {
-            textInfo.meshInfo[i].mesh.vertices = textInfo.meshInfo[i].vertices;
-            text.UpdateGeometry(textInfo.meshInfo[i].mesh, i);
-        }
-    }
-}
-
-public class MenuButtonPulse : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
-{
-    [SerializeField] private float idlePulseAmount = 0.035f;
-    [SerializeField] private float idlePulseSpeed = 2.5f;
-    [SerializeField] private float hoverScale = 1.12f;
-    [SerializeField] private float lerpSpeed = 10f;
-    [SerializeField] private float hoverBrightness = 0.2f;
-
-    private RectTransform rectTransform;
-    private Image image;
-    private Color baseColor;
-    private Color hoverColor;
-    private Vector3 baseScale;
-    private bool hovered;
-
-    public void Configure()
-    {
-        if (rectTransform == null)
-        {
-            rectTransform = GetComponent<RectTransform>();
-        }
-
-        if (image == null)
-        {
-            image = GetComponent<Image>();
-        }
-
-        if (image != null)
-        {
-            baseColor = image.color;
-            hoverColor = Color.Lerp(baseColor, Color.white, Mathf.Clamp01(hoverBrightness));
-        }
-
-        baseScale = Vector3.one;
-    }
-
-    private void Awake()
-    {
-        Configure();
-    }
-
-    private void Update()
-    {
-        if (rectTransform == null)
-        {
-            return;
-        }
-
-        float pulse = 1f + Mathf.Sin(Time.unscaledTime * idlePulseSpeed) * idlePulseAmount;
-        float target = hovered ? hoverScale : pulse;
-        Vector3 targetScale = baseScale * target;
-        rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, targetScale, Time.unscaledDeltaTime * lerpSpeed);
-
-        if (image != null)
-        {
-            Color targetColor = hovered ? hoverColor : baseColor;
-            image.color = Color.Lerp(image.color, targetColor, Time.unscaledDeltaTime * lerpSpeed);
-        }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        hovered = true;
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        hovered = false;
     }
 }

@@ -14,6 +14,8 @@ public class GameOverSceneController : MonoBehaviour
     [SerializeField] private string darkBackgroundPath =
         "Assets/ThirdParty/ImportedPacks/NightForest/Image without mist.png";
 
+    [SerializeField] public AudioClip buttonClickSound;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void EnsureControllerExists()
     {
@@ -33,6 +35,15 @@ public class GameOverSceneController : MonoBehaviour
 
     private void Awake()
     {
+        // Initialize button click sound
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+        
+        ButtonClickSoundManager.SetAudioSource(audioSource);
+        if (buttonClickSound != null)
+            ButtonClickSoundManager.InitializeButtonClickSound(buttonClickSound);
+        
         BuildUi();
     }
 
@@ -145,6 +156,9 @@ public class GameOverSceneController : MonoBehaviour
         colors.selectedColor = colors.highlightedColor;
         button.colors = colors;
         button.onClick.AddListener(action);
+
+        // Add click sound to this button
+        go.AddComponent<UIButtonClickSound>();
 
         Text text = CreateText(label, rt, 46, Vector2.zero, Color.white);
         text.fontSize = 44;

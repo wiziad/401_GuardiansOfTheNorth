@@ -10,6 +10,8 @@ using UnityEngine.InputSystem.UI;
 // Attach to Canvas. Controls the level intro scroll popup.
 public class LevelIntroScroll : MonoBehaviour
 {
+    [SerializeField] public AudioClip buttonClickSound;
+
     [SerializeField] private Animator scrollAnimator;       // scroll's animator
     [SerializeField] private TextMeshProUGUI levelTitleText;   // title text object
     [SerializeField] private TextMeshProUGUI levelContextText; // description text object
@@ -21,6 +23,16 @@ public class LevelIntroScroll : MonoBehaviour
     void Start()
     {
         EnsureEventSystem();
+        
+        // Initialize button click sound
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+        
+        ButtonClickSoundManager.SetAudioSource(audioSource);
+        if (buttonClickSound != null)
+            ButtonClickSoundManager.InitializeButtonClickSound(buttonClickSound);
+        
         BindStartButton();
         scrollPanel.SetActive(false);
         ShowScroll(levelData.levelTitle, levelData.levelContext);
@@ -71,6 +83,10 @@ public class LevelIntroScroll : MonoBehaviour
 
         startButton.onClick.RemoveListener(HideScroll);
         startButton.onClick.AddListener(HideScroll);
+        
+        // Add click sound to this button
+        if (startButton.GetComponent<UIButtonClickSound>() == null)
+            startButton.gameObject.AddComponent<UIButtonClickSound>();
     }
 
     public void ShowScroll(string title, string context)
