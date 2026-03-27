@@ -887,14 +887,27 @@ public class MainMenuSceneController : MonoBehaviour
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
-            if (loginStatusText != null)
-            {
-                SetStatus(loginStatusText, "Enter email and password.");
-            }
+            SetStatus(loginStatusText, "Enter both email and password.");
             return;
         }
 
         StartCoroutine(LoginRoutine(email, password));
+    }
+
+    private void BeginGuestPlay()
+    {
+        HideAuthPanel();
+        if (Application.isPlaying)
+        {
+            SceneRoutes.LoadScene(ResolveStartSceneName(), "Assets/Scenes/GameIntro.unity");
+        }
+    }
+
+    private string ResolveStartSceneName()
+    {
+        return string.IsNullOrWhiteSpace(gameSceneName)
+            ? SceneRoutes.GameIntroScene
+            : gameSceneName;
     }
 
     private void HandleSignupSubmit()
@@ -965,9 +978,9 @@ public class MainMenuSceneController : MonoBehaviour
             loginSucceeded = true;
         });
 
-        if (loginSucceeded && Application.isPlaying && !string.IsNullOrWhiteSpace(gameSceneName))
+        if (loginSucceeded)
         {
-            yield return BeginCloudBackedPlayRoutine();
+            BeginGuestPlay();
             yield break;
         }
 
@@ -1373,15 +1386,8 @@ public class MainMenuSceneController : MonoBehaviour
 
     private void OnStartPressed()
     {
-        if (CloudSaveManager.HasSavedAuthToken())
-        {
-            ShowLoginPanel();
-            SetStatus(loginStatusText, "Restoring your cloud save...");
-            StartCoroutine(BeginCloudBackedPlayRoutine());
-            return;
-        }
-
         ShowLoginPanel();
+        SetStatus(loginStatusText, string.Empty);
     }
 
     private IEnumerator BeginCloudBackedPlayRoutine()
@@ -1399,7 +1405,7 @@ public class MainMenuSceneController : MonoBehaviour
 
         string errorMessage = string.Empty;
 
-        yield return manager.BeginAuthenticatedPlay(backendBaseUrl, gameSceneName, message =>
+        yield return manager.BeginAuthenticatedPlay(backendBaseUrl, ResolveStartSceneName(), message =>
         {
             errorMessage = message;
         });
@@ -1408,6 +1414,7 @@ public class MainMenuSceneController : MonoBehaviour
         {
             SetStatus(loginStatusText, errorMessage);
             SetAuthBusy(false);
+            BeginGuestPlay();
             yield break;
         }
 
