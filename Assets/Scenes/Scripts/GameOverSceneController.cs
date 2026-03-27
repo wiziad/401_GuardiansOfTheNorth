@@ -172,7 +172,7 @@ public class GameOverSceneController : MonoBehaviour
     {
         if (CloudSaveManager.Instance != null)
         {
-            CloudSaveManager.Instance.SaveCurrentProgress();
+            CloudSaveManager.Instance.ClearPendingLoadedSave();
         }
 
         string retryScene = PlayerPrefs.GetString(RetryScenePrefKey, "Level_01_Test");

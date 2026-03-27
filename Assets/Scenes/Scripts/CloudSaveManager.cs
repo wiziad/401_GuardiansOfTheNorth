@@ -154,6 +154,11 @@ public class CloudSaveManager : MonoBehaviour
         StartCoroutine(SaveCurrentProgressCoroutine());
     }
 
+    public void ClearPendingLoadedSave()
+    {
+        pendingLoadedSave = null;
+    }
+
     private IEnumerator CreateInitialSaveAndEnterScene(string fallbackSceneName, Action<string> onError)
     {
         SavePayload payload = BuildCurrentPayload(fallbackSceneName);

@@ -11,7 +11,7 @@ public static class GameFlow
 
         if (CloudSaveManager.Instance != null)
         {
-            CloudSaveManager.Instance.SaveCurrentProgress();
+            CloudSaveManager.Instance.ClearPendingLoadedSave();
         }
 
         if (Application.CanStreamedLevelBeLoaded(GameOverSceneController.SceneName))

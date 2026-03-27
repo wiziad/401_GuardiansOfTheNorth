@@ -84,6 +84,8 @@ public class Level2SceneBootstrap : MonoBehaviour
     {
         // Force requested challenge timer regardless of stale scene overrides.
         levelTimerSeconds = 60f;
+        completionSceneName = SceneRoutes.Level2VictoryScene;
+        completionFallbackScenePath = "Assets/Scenes/Level02_Victory.unity";
         runtimeBuilt = false;
 
         if (Application.isPlaying)

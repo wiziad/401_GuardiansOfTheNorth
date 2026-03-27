@@ -120,9 +120,6 @@ public class PlayerHealth : MonoBehaviour
                             UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
 
-        if (CloudSaveManager.Instance != null)
-            CloudSaveManager.Instance.SaveCurrentProgress();
-
         // Load the Game Over scene
         UnityEngine.SceneManagement.SceneManager.LoadScene(GameOverSceneController.SceneName);
     }
