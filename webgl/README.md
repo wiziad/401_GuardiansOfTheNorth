@@ -1,5 +1,7 @@
 # WebGL deployment folder
 
+Game Link: https://401-guardians-of-the-north.vercel.app/
+
 This folder is intended to be the Vercel project root for the Unity WebGL build.
 
 Put the Unity WebGL export files directly here:
