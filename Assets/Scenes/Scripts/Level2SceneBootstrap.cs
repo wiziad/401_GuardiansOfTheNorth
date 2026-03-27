@@ -1,7 +1,9 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [ExecuteAlways]
 public class Level2SceneBootstrap : MonoBehaviour
@@ -22,6 +24,9 @@ public class Level2SceneBootstrap : MonoBehaviour
     [SerializeField] private bool keepManualSceneObjectsVisible = true;
 
     [Header("Asset Paths")]
+    [SerializeField] private string boatResourcePath = "RuntimeSprites/Boat";
+    [SerializeField] private string fallbackBoatResourcePath = "RuntimeSprites/Boat2";
+    [SerializeField] private string fallbackPlayerResourcePath = "RuntimeSprites/Idle_Down";
     [SerializeField] private string boatPath = "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Boat.png";
     [SerializeField] private string fallbackBoatPath = "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Boat2.png";
     [SerializeField] private string fallbackPlayerPath = "Assets/Sprites/Player/Idle/Idle_Down.png";
@@ -536,10 +541,10 @@ public class Level2SceneBootstrap : MonoBehaviour
     private void BuildBoat(bool editPreview)
     {
         Transform root = GetGeneratedRoot();
-        Sprite boatSprite = LoadSprite(boatPath);
+        Sprite boatSprite = LoadSprite(boatResourcePath, boatPath);
         if (boatSprite == null)
         {
-            boatSprite = LoadSprite(fallbackBoatPath);
+            boatSprite = LoadSprite(fallbackBoatResourcePath, fallbackBoatPath);
             if (boatSprite == null)
             {
                 Debug.LogWarning("Level2: Boat sprite missing. Using generated fallback boat.", this);
@@ -682,7 +687,12 @@ public class Level2SceneBootstrap : MonoBehaviour
 
         if (previewSprite == null)
         {
-            previewSprite = LoadFirstVisibleSprite(fallbackPlayerPath);
+            previewSprite = LoadFirstVisibleSprite(fallbackPlayerResourcePath, fallbackPlayerPath);
+        }
+
+        if (previewSprite == null)
+        {
+            previewSprite = MakeFallbackRiderSprite();
         }
 
         if (previewSprite == null)
@@ -737,29 +747,57 @@ public class Level2SceneBootstrap : MonoBehaviour
         renderer.sortingOrder = 7;
     }
 
-    private Sprite LoadFirstVisibleSprite(string projectRelativePath)
+    private Sprite LoadFirstVisibleSprite(string resourcesPath, string editorAssetPath)
     {
-        if (string.IsNullOrWhiteSpace(projectRelativePath))
+        if (string.IsNullOrWhiteSpace(resourcesPath) && string.IsNullOrWhiteSpace(editorAssetPath))
         {
             return null;
         }
 
-        string key = $"firstvisible::{projectRelativePath}";
+        string key = $"firstvisible::{resourcesPath}::{editorAssetPath}";
         if (spriteCache.TryGetValue(key, out Sprite cached))
         {
             return cached;
         }
 
-        string projectRoot = Directory.GetParent(Application.dataPath)?.FullName ?? Directory.GetCurrentDirectory();
-        string fullPath = Path.Combine(projectRoot, projectRelativePath);
-        if (!File.Exists(fullPath))
+        if (!string.IsNullOrWhiteSpace(resourcesPath))
+        {
+            Sprite[] runtimeSprites = Resources.LoadAll<Sprite>(resourcesPath);
+            if (runtimeSprites != null && runtimeSprites.Length > 0)
+            {
+                Sprite selected = runtimeSprites[0];
+                if (selected != null)
+                {
+                    spriteCache[key] = selected;
+                    return selected;
+                }
+            }
+        }
+
+#if UNITY_EDITOR
+        if (!string.IsNullOrWhiteSpace(editorAssetPath))
+        {
+            UnityEngine.Object[] editorAssets = AssetDatabase.LoadAllAssetsAtPath(editorAssetPath);
+            if (editorAssets != null)
+            {
+                for (int i = 0; i < editorAssets.Length; i++)
+                {
+                    if (editorAssets[i] is Sprite editorSprite)
+                    {
+                        spriteCache[key] = editorSprite;
+                        return editorSprite;
+                    }
+                }
+            }
+        }
+#endif
+
+        Texture2D texture = LoadTexture(resourcesPath, editorAssetPath);
+        if (texture == null)
         {
             return null;
         }
-
-        byte[] bytes = File.ReadAllBytes(fullPath);
-        Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-        if (!texture.LoadImage(bytes))
+        if (!texture.isReadable)
         {
             return null;
         }
@@ -1196,28 +1234,21 @@ public class Level2SceneBootstrap : MonoBehaviour
         }
     }
 
-    private Sprite LoadSprite(string projectRelativePath)
+    private Sprite LoadSprite(string resourcesPath, string editorAssetPath)
     {
-        if (string.IsNullOrWhiteSpace(projectRelativePath))
+        if (string.IsNullOrWhiteSpace(resourcesPath) && string.IsNullOrWhiteSpace(editorAssetPath))
         {
             return null;
         }
 
-        if (spriteCache.TryGetValue(projectRelativePath, out Sprite cached))
+        string cacheKey = $"full::{resourcesPath}::{editorAssetPath}";
+        if (spriteCache.TryGetValue(cacheKey, out Sprite cached))
         {
             return cached;
         }
 
-        string projectRoot = Directory.GetParent(Application.dataPath)?.FullName ?? Directory.GetCurrentDirectory();
-        string fullPath = Path.Combine(projectRoot, projectRelativePath);
-        if (!File.Exists(fullPath))
-        {
-            return null;
-        }
-
-        byte[] bytes = File.ReadAllBytes(fullPath);
-        Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-        if (!texture.LoadImage(bytes))
+        Texture2D texture = LoadTexture(resourcesPath, editorAssetPath);
+        if (texture == null)
         {
             return null;
         }
@@ -1232,8 +1263,33 @@ public class Level2SceneBootstrap : MonoBehaviour
             32f
         );
 
-        spriteCache[projectRelativePath] = sprite;
+        spriteCache[cacheKey] = sprite;
         return sprite;
+    }
+
+    private Texture2D LoadTexture(string resourcesPath, string editorAssetPath)
+    {
+        if (!string.IsNullOrWhiteSpace(resourcesPath))
+        {
+            Texture2D runtimeTexture = Resources.Load<Texture2D>(resourcesPath);
+            if (runtimeTexture != null)
+            {
+                return runtimeTexture;
+            }
+        }
+
+#if UNITY_EDITOR
+        if (!string.IsNullOrWhiteSpace(editorAssetPath))
+        {
+            Texture2D editorTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(editorAssetPath);
+            if (editorTexture != null)
+            {
+                return editorTexture;
+            }
+        }
+#endif
+
+        return null;
     }
 
     private Sprite MakeCircleSprite(Color color)
@@ -1264,6 +1320,53 @@ public class Level2SceneBootstrap : MonoBehaviour
         Sprite sprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 16f);
         spriteCache[key] = sprite;
         return sprite;
+    }
+
+    private Sprite MakeFallbackRiderSprite()
+    {
+        const int width = 24;
+        const int height = 34;
+        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Color clear = new Color(0f, 0f, 0f, 0f);
+        Color body = new Color(0.84f, 0.90f, 0.99f, 1f);
+        Color jacket = new Color(0.15f, 0.26f, 0.46f, 1f);
+        Color skin = new Color(0.97f, 0.81f, 0.66f, 1f);
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                tex.SetPixel(x, y, clear);
+            }
+        }
+
+        for (int x = 8; x <= 15; x++)
+        {
+            for (int y = 4; y <= 17; y++)
+            {
+                tex.SetPixel(x, y, jacket);
+            }
+        }
+
+        for (int x = 9; x <= 14; x++)
+        {
+            for (int y = 18; y <= 23; y++)
+            {
+                tex.SetPixel(x, y, body);
+            }
+        }
+
+        for (int x = 9; x <= 14; x++)
+        {
+            for (int y = 24; y <= 30; y++)
+            {
+                tex.SetPixel(x, y, skin);
+            }
+        }
+
+        tex.filterMode = FilterMode.Point;
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0f, 0f, width, height), new Vector2(0.5f, 0.08f), 32f);
     }
 
     private Sprite MakeRectSprite(Color color)

@@ -1,8 +1,10 @@
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class GameOverSceneController : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class GameOverSceneController : MonoBehaviour
     public const string RetryScenePrefKey = "RetrySceneName";
 
     [SerializeField] private string menuSceneName = "MainMenu";
+    [SerializeField] private string darkBackgroundResourcePath = "RuntimeSprites/NightForestBackground";
     [SerializeField] private string darkBackgroundPath =
         "Assets/ThirdParty/ImportedPacks/NightForest/Image without mist.png";
 
@@ -87,7 +90,7 @@ public class GameOverSceneController : MonoBehaviour
         GameObject bg = CreateUiObject("Background", parent);
         Image image = bg.AddComponent<Image>();
         image.color = Color.white;
-        image.sprite = LoadSprite(darkBackgroundPath);
+        image.sprite = LoadSprite(darkBackgroundResourcePath, darkBackgroundPath) ?? MakeFallbackBackgroundSprite();
         image.type = Image.Type.Sliced;
         image.preserveAspect = false;
 
@@ -216,28 +219,69 @@ public class GameOverSceneController : MonoBehaviour
         rt.offsetMax = Vector2.zero;
     }
 
-    private Sprite LoadSprite(string projectRelativePath)
+    private Sprite LoadSprite(string resourcesPath, string editorAssetPath)
     {
-        if (string.IsNullOrWhiteSpace(projectRelativePath))
+        Texture2D texture = LoadTexture(resourcesPath, editorAssetPath);
+        if (texture == null)
         {
             return null;
         }
 
-        string projectRoot = Directory.GetParent(Application.dataPath)?.FullName ?? Directory.GetCurrentDirectory();
-        string fullPath = Path.Combine(projectRoot, projectRelativePath);
-        if (!File.Exists(fullPath))
+        return Sprite.Create(
+            texture,
+            new Rect(0f, 0f, texture.width, texture.height),
+            new Vector2(0.5f, 0.5f),
+            100f
+        );
+    }
+
+    private Texture2D LoadTexture(string resourcesPath, string editorAssetPath)
+    {
+        if (!string.IsNullOrWhiteSpace(resourcesPath))
         {
-            return null;
+            Texture2D runtimeTexture = Resources.Load<Texture2D>(resourcesPath);
+            if (runtimeTexture != null)
+            {
+                return runtimeTexture;
+            }
         }
 
-        byte[] bytes = File.ReadAllBytes(fullPath);
-        Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-        if (!tex.LoadImage(bytes))
+#if UNITY_EDITOR
+        if (!string.IsNullOrWhiteSpace(editorAssetPath))
         {
-            return null;
+            Texture2D editorTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(editorAssetPath);
+            if (editorTexture != null)
+            {
+                return editorTexture;
+            }
+        }
+#endif
+
+        return null;
+    }
+
+    private Sprite MakeFallbackBackgroundSprite()
+    {
+        const int width = 256;
+        const int height = 256;
+        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Color top = new Color(0.06f, 0.11f, 0.19f, 1f);
+        Color bottom = new Color(0.01f, 0.03f, 0.08f, 1f);
+
+        for (int y = 0; y < height; y++)
+        {
+            float t = y / (height - 1f);
+            Color row = Color.Lerp(bottom, top, t);
+            for (int x = 0; x < width; x++)
+            {
+                tex.SetPixel(x, y, row);
+            }
         }
 
-        tex.filterMode = FilterMode.Point;
-        return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+        tex.filterMode = FilterMode.Bilinear;
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.Apply();
+
+        return Sprite.Create(tex, new Rect(0f, 0f, width, height), new Vector2(0.5f, 0.5f), 100f);
     }
 }
