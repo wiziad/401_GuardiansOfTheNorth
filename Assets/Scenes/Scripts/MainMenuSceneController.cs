@@ -65,6 +65,7 @@ public class MainMenuSceneController : MonoBehaviour
 
     [Header("Auth Popup")]
     [SerializeField] private Vector2 authPanelSize = new(640f, 560f);
+    [SerializeField] private TMP_FontAsset authFont;
     [SerializeField] private Color authOverlayColor = new(0f, 0f, 0f, 0.7f);
     [SerializeField] private Color authPanelColor = new(0.04f, 0.08f, 0.11f, 0.98f);
     [SerializeField] private Color authInputColor = new(0.09f, 0.16f, 0.2f, 0.98f);
@@ -537,10 +538,7 @@ public class MainMenuSceneController : MonoBehaviour
         authFooterLabel.overflowMode = TextOverflowModes.Overflow;
         authFooterLabel.fontSize = 26f;
         authFooterLabel.fontStyle = FontStyles.Bold;
-        if (logoFont != null)
-        {
-            authFooterLabel.font = logoFont;
-        }
+        if (authFont != null) authFooterLabel.font = authFont;
 
         return footer;
     }
@@ -615,10 +613,7 @@ public class MainMenuSceneController : MonoBehaviour
         text.fontSize = 48f;
         text.color = authTextColor;
         text.fontStyle = FontStyles.Bold;
-        if (logoFont != null)
-        {
-            text.font = logoFont;
-        }
+        if (authFont != null) text.font = authFont;
     }
 
     private void CreateSmallGhostButton(Transform parent, string name, string label, UnityEngine.Events.UnityAction action)
@@ -660,10 +655,7 @@ public class MainMenuSceneController : MonoBehaviour
         text.fontSize = 30f;
         text.color = authTextColor;
         text.fontStyle = FontStyles.Bold;
-        if (logoFont != null)
-        {
-            text.font = logoFont;
-        }
+        if (authFont != null) text.font = authFont;
     }
 
     private TMP_InputField CreateInputField(Transform parent, string name, string placeholderText, bool isPassword)
@@ -712,10 +704,7 @@ public class MainMenuSceneController : MonoBehaviour
         text.overflowMode = TextOverflowModes.Truncate;
         text.fontSize = 30f;
         text.color = authTextColor;
-        if (logoFont != null)
-        {
-            text.font = logoFont;
-        }
+        if (authFont != null) text.font = authFont;
 
         GameObject placeholderGo = GetOrCreateChild((RectTransform)textArea.transform, "Placeholder");
         RectTransform placeholderRt = placeholderGo.GetComponent<RectTransform>();
@@ -731,10 +720,7 @@ public class MainMenuSceneController : MonoBehaviour
         placeholder.overflowMode = TextOverflowModes.Truncate;
         placeholder.fontSize = 30f;
         placeholder.color = authPlaceholderColor;
-        if (logoFont != null)
-        {
-            placeholder.font = logoFont;
-        }
+        if (authFont != null) placeholder.font = authFont;
 
         input.targetGraphic = background;
         input.textViewport = textAreaRt;
@@ -786,9 +772,9 @@ public class MainMenuSceneController : MonoBehaviour
         text.fontSize = 36f;
         text.color = buttonTextColor;
         text.fontStyle = FontStyles.Bold;
-        if (logoFont != null)
+        if (authFont != null)
         {
-            text.font = logoFont;
+            text.font = authFont;
         }
 
         return button;
@@ -832,10 +818,7 @@ public class MainMenuSceneController : MonoBehaviour
         text.overflowMode = TextOverflowModes.Ellipsis;
         text.fontSize = 20f;
         text.color = new Color(1f, 0.8f, 0.65f, 1f);
-        if (logoFont != null)
-        {
-            text.font = logoFont;
-        }
+        if (authFont != null) text.font = authFont;
 
         return text;
     }
