@@ -100,6 +100,8 @@ public class MainMenuSceneController : MonoBehaviour
     private Button loginSubmitButton;
     private Button signupSubmitButton;
     private bool authBusy;
+    private float lastRebuildTime = -1f;
+    private const float RebuildCooldownSeconds = 0.5f;
 
     private void OnEnable()
     {
@@ -1449,6 +1451,13 @@ public class MainMenuSceneController : MonoBehaviour
             return;
         }
 
+        // Prevent rapid rebuild cycles which can cause stack overflow
+        if (Time.realtimeSinceStartup - lastRebuildTime < RebuildCooldownSeconds)
+        {
+            return;
+        }
+
+        lastRebuildTime = Time.realtimeSinceStartup;
         Rebuild();
     }
 
