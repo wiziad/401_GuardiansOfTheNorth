@@ -1896,7 +1896,7 @@ RectTransform:
   m_GameObject: {fileID: 888638767}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.5, y: 5.5, z: 5.5}
+  m_LocalScale: {x: 5.3, y: 5.3, z: 5.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 271234735}
@@ -1904,7 +1904,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1323, y: 368}
+  m_AnchoredPosition: {x: 1351.9, y: 368}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &888638769
@@ -1986,7 +1986,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8778977052584593107, guid: b75fcf982326bc44ca79ce2e394ea59a, type: 3}
+  m_Sprite: {fileID: 8300880620034703836, guid: abd6726da4a7c7043a3e55b55f178acf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2626,17 +2626,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373667710}
-  m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1598750954}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -80}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -32.535004, y: -6.0000086}
-  m_SizeDelta: {x: -15.069996, y: -18.000017}
+  m_AnchoredPosition: {x: 0, y: 15.25}
+  m_SizeDelta: {x: 0, y: 10.499999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1373667712
 MonoBehaviour:
@@ -2687,8 +2687,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23
-  m_fontSizeBase: 23
+  m_fontSize: 9.15
+  m_fontSizeBase: 9.15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2888,18 +2888,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598750953}
-  m_LocalRotation: {x: 0, y: 0, z: 0.6427876, w: 0.7660445}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.28, y: 2.28, z: 2.28}
+  m_LocalScale: {x: 5.3, y: 5.3, z: 5.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1373667711}
   m_Father: {fileID: 481013346}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 80}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 1095, y: 355}
-  m_SizeDelta: {x: 31, y: 73}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1598750955
 MonoBehaviour:
@@ -2913,8 +2913,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce570af4cb93024ea783b82913596f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PinHover
-  normalScale: 2.44
-  hoverScale: 2.81
+  normalScale: 5.1
+  hoverScale: 6.5
   speed: 10
 --- !u!114 &1598750956
 MonoBehaviour:
@@ -2974,13 +2974,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3880318848749474927, guid: 5104b96d904254867a8710fcb44b3690, type: 3}
+  m_Sprite: {fileID: 8300880620034703836, guid: abd6726da4a7c7043a3e55b55f178acf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
