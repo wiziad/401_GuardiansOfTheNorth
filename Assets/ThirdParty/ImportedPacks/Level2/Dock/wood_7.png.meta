@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 61822a9ad43c644fb87b70a955268b18
+guid: ce3e82df799a23247b1352d477174e18
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3786422932411902546
-    second: Grass2_0
-  - first:
-      213: 5906148160138710115
-    second: Grass2_1
+      213: 736591534332665714
+    second: wood_7_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -116,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grass2_0
+      name: wood_7_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 30
-        height: 25
+        x: 11
+        y: 9
+        width: 43
+        height: 45
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,30 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25aedcf78931c8430800000000000000
-      internalID: 3786422932411902546
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Grass2_1
-      rect:
-        serializedVersion: 2
-        x: 27
-        y: 0
-        width: 11
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 36c05e3a57ad6f150800000000000000
-      internalID: 5906148160138710115
+      spriteID: 27f557c0916e83a00800000000000000
+      internalID: 736591534332665714
       vertices: []
       indices: 
       edges: []
@@ -173,8 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Grass2_0: 3786422932411902546
-      Grass2_1: 5906148160138710115
+      wood_7_0: 736591534332665714
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
