@@ -92,7 +92,7 @@ public class MapManager2 : MonoBehaviour
 
     void OnPlayClicked()
     {
-        SceneManager.LoadScene("ScrollIntro2");
+        SceneManager.LoadScene("ScrollIntro");
     }
 
     void CloseLevelPanel()
