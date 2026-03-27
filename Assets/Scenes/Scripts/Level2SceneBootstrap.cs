@@ -15,6 +15,7 @@ public class Level2SceneBootstrap : MonoBehaviour
     [SerializeField] private bool buildInEditMode = true;
     [SerializeField] private bool showIntroBeforeGameplay = true;
     [SerializeField] private string introSceneName = "ScrollIntro2";
+    [SerializeField] private bool keepManualSceneObjectsVisible = true;
 
     [Header("Asset Paths")]
     [SerializeField] private string boatPath = "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Boat.png";
@@ -191,7 +192,10 @@ public class Level2SceneBootstrap : MonoBehaviour
     {
         ResetCounters();
         playerVisual = FindPlayerVisual();
-        HideLegacySceneArt();
+        if (!keepManualSceneObjectsVisible)
+        {
+            HideLegacySceneArt();
+        }
         SetupCamera();
         ForceClearGeneratedImmediate();
         BuildEnvironment();
@@ -464,7 +468,6 @@ public class Level2SceneBootstrap : MonoBehaviour
         CreateBush("BushC", new Vector3(-3.1f, -4.42f, 0f), new Vector3(2.3f, 1.1f, 1f), root);
         CreateBush("BushD", new Vector3(-0.4f, -4.55f, 0f), new Vector3(1.9f, 0.9f, 1f), root);
         CreateBush("BushE", new Vector3(2.9f, -4.46f, 0f), new Vector3(2.2f, 1.0f, 1f), root);
-        CreateBush("BushF", new Vector3(6.1f, -4.52f, 0f), new Vector3(1.8f, 0.95f, 1f), root);
     }
 
     private void CreateBush(string name, Vector3 pos, Vector3 scale, Transform root)
