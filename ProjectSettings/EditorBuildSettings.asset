@@ -9,8 +9,20 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 1d4083edfdda43cd80acd83193118d01
   - enabled: 1
+    path: Assets/Scenes/Map1.unity
+    guid: 4f2e0b16fd010984ba9b632219c495ca
+  - enabled: 1
+    path: Assets/Scenes/ScrollIntro.unity
+    guid: 20f215ee3a491824894b4fba48181bb9
+  - enabled: 1
     path: Assets/Scenes/Level_01_Test.unity
     guid: 189b2c17d4b0da844961ad7f15136c78
+  - enabled: 1
+    path: Assets/Scenes/Map2.unity
+    guid: 85ddb2ff75f75c14da885e65c05d9c66
+  - enabled: 1
+    path: Assets/Scenes/ScrollIntro2.unity
+    guid: 3ec08a319c0b00747a77c8400680cafb
   - enabled: 1
     path: Assets/Scenes/Level_02_WaterCleanup.unity
     guid: 963e7292b3b74c02aaec53599f0784bc
@@ -20,9 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/Scenes/ScrollIntro2.unity
-    guid: 3ec08a319c0b00747a77c8400680cafb
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
