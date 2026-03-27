@@ -1900,7 +1900,7 @@ MonoBehaviour:
   backTint: {r: 1, g: 1, b: 1, a: 1}
   forestOverlaySprite: {fileID: 0}
   forestOverlayTint: {r: 1, g: 1, b: 1, a: 0}
-  gameSceneName: Level_01_Test
+  gameSceneName: GameIntro
   applyPropSiblingIndex: 0
   props: []
   forceCenteredLayout: 0
