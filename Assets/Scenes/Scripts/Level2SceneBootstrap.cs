@@ -10,6 +10,8 @@ public class Level2SceneBootstrap : MonoBehaviour
     public const string Level2SceneName = "Level_02_WaterCleanup";
     public static bool SkipIntroOnce;
     public static bool IntroRedirectConsumed;
+    [SerializeField] private Vector3 trashScale = new Vector3(4.5f, 6.6f, 1f);
+    [SerializeField] private Vector3 invasiveScale = new Vector3(1f, 1f, 1f);
 
     [Header("Preview")]
     [SerializeField] private bool buildInEditMode = true;
@@ -31,22 +33,14 @@ public class Level2SceneBootstrap : MonoBehaviour
     [SerializeField] private Vector2 waterMin = new Vector2(-7.4f, -3.1f);
     [SerializeField] private Vector2 waterMax = new Vector2(7.4f, 3.6f);
 
-    [SerializeField] private string[] invasivePaths =
+    [SerializeField] private Sprite[] invasivePaths =
     {
-        "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Grass1.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Grass2.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Grass3.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Fishing_Craftpix/3 Objects/Grass4.png"
+        
     };
 
-    [SerializeField] private string[] trashPaths =
+    [SerializeField] private Sprite[] trashPaths =
     {
-        "Assets/ThirdParty/ImportedPacks/Level2/Pixel_Mart/banana.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Pixel_Mart/cookies.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Pixel_Mart/cabbage.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Pixel_Mart/strawberry_p.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Pixel_Mart/tuna_can.png",
-        "Assets/ThirdParty/ImportedPacks/Level2/Pixel_Mart/milk_bottle.png"
+        
     };
 
     private readonly Dictionary<string, Sprite> spriteCache = new Dictionary<string, Sprite>();
@@ -230,7 +224,7 @@ public class Level2SceneBootstrap : MonoBehaviour
             TryFishCollectible();
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && dockInRange)
         {
             TryCompleteAtDock();
         }
@@ -450,7 +444,7 @@ public class Level2SceneBootstrap : MonoBehaviour
     {
         Transform root = GetGeneratedRoot();
         // Overscan to remove border.
-        CreateSolidRect("WaterBase", new Vector3(0f, 0f, 0f), new Vector2(26f, 16f), new Color(0.05f, 0.16f, 0.33f), -20, root);
+        CreateSolidRect("WaterBase", new Vector3(0f, 0f, 0f), new Vector2(26f, 16f), new Color(0.18f, 0.56f, 0.64f), -20, root);
         TryCreateWaterOverlay("WaterOverlay_A", new Vector3(0f, 0.85f, 0f), new Vector2(30f, 6.6f), new Color(0.55f, 0.72f, 0.92f, 0.30f), 0.22f, 10f, -19, root);
         TryCreateWaterOverlay("WaterOverlay_B", new Vector3(0f, 0.45f, 0f), new Vector2(30f, 6.0f), new Color(0.35f, 0.55f, 0.78f, 0.25f), -0.18f, 10f, -18, root);
         CreateSolidRect("GrassUnderlay", new Vector3(0f, -5.55f, 0f), new Vector2(34f, 2.8f), new Color(0.12f, 0.38f, 0.17f), -11, root);
@@ -502,12 +496,15 @@ public class Level2SceneBootstrap : MonoBehaviour
         dockRenderer.sortingOrder = -7;
 
         GameObject dockZone = new GameObject("DockZone");
-        dockZone.transform.SetParent(dock.transform, false);
-        dockZone.transform.localPosition = new Vector3(-1.8f, 2.15f, 0f);
+        dockZone.transform.SetParent(root, false);
+        dockZone.transform.position = new Vector3(8.45f, -2.1f, 0f);
+
+        Rigidbody2D dockRB = dockZone.AddComponent<Rigidbody2D>();
+        dockRB.isKinematic = true;
 
         BoxCollider2D trigger = dockZone.AddComponent<BoxCollider2D>();
         trigger.isTrigger = true;
-        trigger.size = new Vector2(4.4f, 4.2f);
+        trigger.size = new Vector2(3.6f, 3.6f);
 
         dockZone.AddComponent<Level2DockZone>();
     }
@@ -556,9 +553,13 @@ public class Level2SceneBootstrap : MonoBehaviour
         Rigidbody2D rb = boatObject.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
+        rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         CircleCollider2D bodyCollider = boatObject.AddComponent<CircleCollider2D>();
         bodyCollider.radius = 0.35f;
+
+        boatObject.tag = "Player";
 
         boatController = boatObject.AddComponent<Level2BoatController>();
         boatController.minBounds = waterMin;
@@ -899,31 +900,30 @@ public class Level2SceneBootstrap : MonoBehaviour
         }
     }
 
-    private void SpawnCollectibles(bool editPreview)
+  private void SpawnCollectibles(bool editPreview)
     {
         Transform root = GetGeneratedRoot();
         spawnedCollectiblePositions.Clear();
 
         for (int i = 0; i < invasiveToSpawn; i++)
         {
-            SpawnOne(root, invasivePaths, true, "Invasive_" + (i + 1), new Vector3(0.75f, 0.75f, 1f), editPreview);
+            SpawnOne(root, invasivePaths, true, "Invasive_" + (i + 1), invasiveScale, editPreview);
         }
 
         for (int i = 0; i < trashToSpawn; i++)
         {
-            SpawnOne(root, trashPaths, false, "Trash_" + (i + 1), new Vector3(0.65f, 0.65f, 1f), editPreview);
+            SpawnOne(root, trashPaths, false, "Trash_" + (i + 1), trashScale, editPreview);
         }
     }
 
-    private void SpawnOne(Transform root, string[] paths, bool invasive, string name, Vector3 scale, bool editPreview)
+    private void SpawnOne(Transform root, Sprite[] paths, bool invasive, string name, Vector3 scale, bool editPreview)
     {
         if (paths == null || paths.Length == 0)
         {
             return;
         }
 
-        string path = paths[Random.Range(0, paths.Length)];
-        Sprite sprite = LoadSprite(path);
+        Sprite sprite = paths[Random.Range(0, paths.Length)];
         if (sprite == null)
         {
             return;
