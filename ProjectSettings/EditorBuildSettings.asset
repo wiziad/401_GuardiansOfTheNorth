@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Level_01_Test.unity
     guid: 189b2c17d4b0da844961ad7f15136c78
   - enabled: 1
+    path: Assets/Scenes/Level01_Victory.unity
+    guid: 55c6f0d9eefa7de41a64bd975019b05f
+  - enabled: 1
     path: Assets/Scenes/Map2.unity
     guid: 85ddb2ff75f75c14da885e65c05d9c66
   - enabled: 1
@@ -35,6 +38,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameIntro.unity
     guid: 0992c6c16a4bc2e45a0ab46f9b89f184
+  - enabled: 1
+    path: Assets/Scenes/Level02_Victory.unity
+    guid: 4c088210b8eebc84fb97c2e999b7f3a2
+  - enabled: 1
+    path: Assets/Scenes/End_Congrats.unity
+    guid: 0dd8e5aacde47954782708460caedc7e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
