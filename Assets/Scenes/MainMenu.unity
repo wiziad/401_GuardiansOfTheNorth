@@ -568,7 +568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &347996270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -762,7 +762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &384606065
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1085,6 +1085,8 @@ GameObject:
   - component: {fileID: 577256431}
   - component: {fileID: 577256432}
   - component: {fileID: 577256433}
+  - component: {fileID: 577256435}
+  - component: {fileID: 577256434}
   m_Layer: 5
   m_Name: LogoTitle
   m_TagString: Untagged
@@ -1108,7 +1110,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 42}
+  m_AnchoredPosition: {x: 20, y: -1}
   m_SizeDelta: {x: 1200, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &577256429
@@ -1131,7 +1133,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: guardians of the north
+  m_text: Guardians of the North
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   m_sharedMaterial: {fileID: 587143646}
@@ -1158,8 +1160,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 104
-  m_fontSizeBase: 104
+  m_fontSize: 128
+  m_fontSizeBase: 128
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1197,7 +1199,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 543.0459, y: 0, z: -849.6849, w: 685.0626}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1250,6 +1252,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurvedTMPText
   curveAmount: 0
+--- !u!114 &577256434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577256427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 704219188}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CurvedTMPText
+  curveAmount: 0
+--- !u!114 &577256435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577256427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.9}
+  m_EffectDistance: {x: 6, y: -6}
+  m_UseGraphicAlpha: 1
 --- !u!21 &587143646
 Material:
   serializedVersion: 8
@@ -1320,7 +1350,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.3
+    - _OutlineWidth: 0.45
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
@@ -1359,6 +1389,21 @@ Material:
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!115 &704219188
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: CurvedTMPText
+  m_Namespace: 
+  m_AssemblyName: Assembly-CSharp
 --- !u!1 &735966835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,6 +1633,7 @@ GameObject:
   - component: {fileID: 903350164}
   - component: {fileID: 903350170}
   - component: {fileID: 903350171}
+  - component: {fileID: 903350172}
   m_Layer: 0
   m_Name: PlayButton
   m_TagString: Untagged
@@ -1783,6 +1829,23 @@ MonoBehaviour:
   hoverScale: 1.12
   lerpSpeed: 10
   hoverBrightness: 0.2
+--- !u!114 &903350172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903350162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 948895577}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuButtonPulse
+  idlePulseAmount: 0.035
+  idlePulseSpeed: 2.5
+  hoverScale: 1.12
+  lerpSpeed: 10
+  hoverBrightness: 0.2
 --- !u!1 &910000000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1840,11 +1903,11 @@ MonoBehaviour:
   gameSceneName: Level_01_Test
   applyPropSiblingIndex: 0
   props: []
-  forceCenteredLayout: 1
-  logoText: guardians of the north
+  forceCenteredLayout: 0
+  logoText: Guardians of the North
   logoFont: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   logoSize: {x: 1200, y: 220}
-  logoPosition: {x: 0, y: 210}
+  logoPosition: {x: 20, y: -1}
   logoRotationZ: 0
   logoCurveAmount: 0
   logoFontSize: 128
@@ -1866,6 +1929,21 @@ MonoBehaviour:
   buttonColor: {r: 0.09, g: 0.24, b: 0.31, a: 0.96}
   buttonBorderColor: {r: 0.88, g: 0.97, b: 1, a: 1}
   buttonTextColor: {r: 0.98, g: 0.99, b: 1, a: 1}
+--- !u!115 &948895577
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: MenuButtonPulse
+  m_Namespace: 
+  m_AssemblyName: Assembly-CSharp
 --- !u!1 &954486708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,7 +2041,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1049364825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1993,7 +2071,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1049364824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1807025080}
+  m_Script: {fileID: 948895577}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuButtonPulse
   idlePulseAmount: 0.035
@@ -2127,7 +2205,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1049364824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1807025080}
+  m_Script: {fileID: 948895577}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuButtonPulse
   idlePulseAmount: 0.035

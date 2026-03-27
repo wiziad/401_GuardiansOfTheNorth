@@ -13,22 +13,9 @@ MonoBehaviour:
   m_Name: Level02_Intro
   m_EditorClassIdentifier: Assembly-CSharp::LevelIntroData
   levelTitle: Beneath the Surface
-  levelContext: 'Something is spreading beneath the surface.
-
-    
-
-    Eurasian
-    watermilfoil is forming dense mats in lakes, blocking sunlight, lowering oxygen,
-    and choking out native plants. Fish habitats are already being affected.
-
-    
-
-    It
-    spreads easily through tiny fragments carried by boats and currents.
-
-    
-
-    <color=#FF0000><size=30><b>Mission:</b></size>
-
-    <size=23>Remove
-    infestations and stop the spread between lakes.</size></color>'
+  levelContext: "Something is spreading beneath the surface.\n\n\nEurasian watermilfoil
+    is forming dense mats in lakes, blocking sunlight, lowering oxygen, and choking
+    out native plants. Fish habitats are already being affected.\n\n\nIt spreads
+    easily through tiny fragments carried by boats and currents.\n\nTrash infiltrates
+    our lakes. Help clean our water and protect the spieces that reside in it. \n<color=#FF0000><size=30><b>Mission:</b></size>\n<size=23>Remove
+    infestations and stop the spread between lakes.</size></color>"
