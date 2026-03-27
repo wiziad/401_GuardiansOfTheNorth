@@ -13,6 +13,7 @@ public class GameOverSceneController : MonoBehaviour
     public const string RetryScenePrefKey = "RetrySceneName";
 
     [SerializeField] private string menuSceneName = "MainMenu";
+    [SerializeField] private Sprite darkBackgroundSprite;
     [SerializeField] private string darkBackgroundResourcePath = "RuntimeSprites/NightForestBackground";
     [SerializeField] private string darkBackgroundPath =
         "Assets/ThirdParty/ImportedPacks/NightForest/Image without mist.png";
@@ -90,7 +91,9 @@ public class GameOverSceneController : MonoBehaviour
         GameObject bg = CreateUiObject("Background", parent);
         Image image = bg.AddComponent<Image>();
         image.color = Color.white;
-        image.sprite = LoadSprite(darkBackgroundResourcePath, darkBackgroundPath) ?? MakeFallbackBackgroundSprite();
+        image.sprite = darkBackgroundSprite != null
+            ? darkBackgroundSprite
+            : LoadSprite(darkBackgroundResourcePath, darkBackgroundPath) ?? MakeFallbackBackgroundSprite();
         image.type = Image.Type.Sliced;
         image.preserveAspect = false;
 

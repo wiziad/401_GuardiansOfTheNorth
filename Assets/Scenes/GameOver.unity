@@ -529,6 +529,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuSceneName: MainMenu
+  darkBackgroundSprite: {fileID: 6007397753342447002, guid: bdc155a75a891455180b4c6ab40d3af5, type: 3}
+  darkBackgroundResourcePath: RuntimeSprites/NightForestBackground
   darkBackgroundPath: Assets/ThirdParty/ImportedPacks/NightForest/Image without mist.png
   buttonClickSound: {fileID: 8300000, guid: 7eb1f76ff7d516f4aa44dc3e27d16642, type: 3}
 --- !u!1660057539 &9223372036854775807
