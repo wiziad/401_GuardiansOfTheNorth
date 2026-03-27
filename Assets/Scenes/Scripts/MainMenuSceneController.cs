@@ -119,6 +119,11 @@ public class MainMenuSceneController : MonoBehaviour
         if (buttonClickSound != null)
             ButtonClickSoundManager.InitializeButtonClickSound(buttonClickSound);
 
+        if (CloudSaveManager.Instance != null)
+        {
+            CloudSaveManager.Instance.ConfigureBackend(backendBaseUrl);
+        }
+
         if (!rebuildOnEnable)
         {
             TryAutoRebuild();
@@ -1001,6 +1006,7 @@ public class MainMenuSceneController : MonoBehaviour
     {
         SetAuthBusy(true);
         SetStatus(loginStatusText, "Logging in...");
+        bool loginSucceeded = false;
 
         LoginRequest payload = new()
         {
@@ -1020,13 +1026,14 @@ public class MainMenuSceneController : MonoBehaviour
             }
 
             SaveAuthToken(result.Token);
-            HideAuthPanel();
-
-            if (Application.isPlaying && !string.IsNullOrWhiteSpace(gameSceneName))
-            {
-                SceneManager.LoadScene(gameSceneName);
-            }
+            loginSucceeded = true;
         });
+
+        if (loginSucceeded && Application.isPlaying && !string.IsNullOrWhiteSpace(gameSceneName))
+        {
+            yield return BeginCloudBackedPlayRoutine();
+            yield break;
+        }
 
         SetAuthBusy(false);
     }
@@ -1430,7 +1437,45 @@ public class MainMenuSceneController : MonoBehaviour
 
     private void OnStartPressed()
     {
+        if (CloudSaveManager.HasSavedAuthToken())
+        {
+            ShowLoginPanel();
+            SetStatus(loginStatusText, "Restoring your cloud save...");
+            StartCoroutine(BeginCloudBackedPlayRoutine());
+            return;
+        }
+
         ShowLoginPanel();
+    }
+
+    private IEnumerator BeginCloudBackedPlayRoutine()
+    {
+        SetAuthBusy(true);
+        SetStatus(loginStatusText, "Syncing cloud save...");
+
+        CloudSaveManager manager = CloudSaveManager.Instance;
+        if (manager == null)
+        {
+            SetStatus(loginStatusText, "Cloud save manager is unavailable.");
+            SetAuthBusy(false);
+            yield break;
+        }
+
+        string errorMessage = string.Empty;
+
+        yield return manager.BeginAuthenticatedPlay(backendBaseUrl, gameSceneName, message =>
+        {
+            errorMessage = message;
+        });
+
+        if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            SetStatus(loginStatusText, errorMessage);
+            SetAuthBusy(false);
+            yield break;
+        }
+
+        HideAuthPanel();
     }
 
     private void OnQuitPressed()

@@ -9,6 +9,11 @@ public static class GameFlow
         PlayerPrefs.SetString(GameOverSceneController.RetryScenePrefKey, activeScene);
         PlayerPrefs.Save();
 
+        if (CloudSaveManager.Instance != null)
+        {
+            CloudSaveManager.Instance.SaveCurrentProgress();
+        }
+
         if (Application.CanStreamedLevelBeLoaded(GameOverSceneController.SceneName))
         {
             SceneManager.LoadScene(GameOverSceneController.SceneName);

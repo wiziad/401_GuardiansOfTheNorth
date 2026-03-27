@@ -113,6 +113,11 @@ public class LevelIntroScroll : MonoBehaviour
             scrollAnimator.SetTrigger("Close");
         }
 
+        if (CloudSaveManager.Instance != null)
+        {
+            CloudSaveManager.Instance.SaveCurrentProgress();
+        }
+
         if (!string.IsNullOrWhiteSpace(nextSceneName) &&
             Application.CanStreamedLevelBeLoaded(nextSceneName))
         {

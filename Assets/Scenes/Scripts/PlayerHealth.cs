@@ -86,6 +86,13 @@ public class PlayerHealth : MonoBehaviour
             energyFillImage.fillAmount = (float)currentEnergy / maxEnergy;
     }
 
+    public void ApplyCloudState(int hp, int mana)
+    {
+        currentHealth = Mathf.Clamp(hp, 0, maxHealth);
+        currentEnergy = Mathf.Clamp(mana, 0, maxEnergy);
+        RefreshUI();
+    }
+
     // ── Knockback ─────────────────────────────────────────────────────────────
 
     IEnumerator ApplyKnockback(Vector2 direction)
@@ -112,6 +119,9 @@ public class PlayerHealth : MonoBehaviour
         PlayerPrefs.SetString(GameOverSceneController.RetryScenePrefKey, 
                             UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
+
+        if (CloudSaveManager.Instance != null)
+            CloudSaveManager.Instance.SaveCurrentProgress();
 
         // Load the Game Over scene
         UnityEngine.SceneManagement.SceneManager.LoadScene(GameOverSceneController.SceneName);

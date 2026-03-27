@@ -9,12 +9,16 @@ public class LevelCompleteNotifier : MonoBehaviour
     {
         if (GameProgress.Instance != null)
             GameProgress.Instance.SetLevel1Complete();
+        if (CloudSaveManager.Instance != null)
+            CloudSaveManager.Instance.SaveCurrentProgress();
 
         SceneManager.LoadScene("Map1");
     }
 
     public void NotifyLevel2Complete()
     {
+        if (CloudSaveManager.Instance != null)
+            CloudSaveManager.Instance.SaveCurrentProgress();
         SceneManager.LoadScene("Map2");
     }
 }

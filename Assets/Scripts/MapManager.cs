@@ -88,6 +88,8 @@ public class MapManager : MonoBehaviour
 
     void OnPlayClicked()
     {
+        if (CloudSaveManager.Instance != null)
+            CloudSaveManager.Instance.SaveCurrentProgress();
         SceneManager.LoadScene("ScrollIntro2");
     }
 
