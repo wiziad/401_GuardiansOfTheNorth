@@ -107,6 +107,13 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player died");
-        gameObject.SetActive(false);
+
+        // Save the current scene so "Play Again" reloads it
+        PlayerPrefs.SetString(GameOverSceneController.RetryScenePrefKey, 
+                            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        PlayerPrefs.Save();
+
+        // Load the Game Over scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene(GameOverSceneController.SceneName);
     }
 }
