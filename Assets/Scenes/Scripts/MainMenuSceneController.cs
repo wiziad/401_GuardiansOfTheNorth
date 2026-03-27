@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -56,8 +55,6 @@ public class MainMenuSceneController : MonoBehaviour
     [SerializeField] private Color cardColor = new(0.03f, 0.06f, 0.08f, 0.78f);
     [SerializeField] private Color cardBorderColor = new(0.76f, 0.91f, 0.95f, 0.95f);
     [SerializeField] private Color ambientShadeColor = new(0f, 0f, 0f, 0.42f);
-    [SerializeField] private string subtitleText = "A NORTHERN PIXEL SAGA";
-    [SerializeField] private Color subtitleColor = new(0.88f, 0.96f, 1f, 0.95f);
 
     [Header("Buttons")]
     [SerializeField] private Vector2 buttonStackPosition = new(0f, -220f);
@@ -500,6 +497,7 @@ public class MainMenuSceneController : MonoBehaviour
     private GameObject BuildFooterSwitch(RectTransform parent, string name)
     {
         GameObject footer = GetOrCreateChild(parent, name);
+        ClearChildren(footer.transform);
         RectTransform rt = footer.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0.5f, 0.5f);
         rt.anchorMax = new Vector2(0.5f, 0.5f);
@@ -532,6 +530,9 @@ public class MainMenuSceneController : MonoBehaviour
 
         authFooterLabel = GetOrAdd<TextMeshProUGUI>(labelGo);
         authFooterLabel.alignment = TextAlignmentOptions.Center;
+        authFooterLabel.richText = true;
+        authFooterLabel.overrideColorTags = false;
+        authFooterLabel.color = Color.white;
         authFooterLabel.textWrappingMode = TextWrappingModes.NoWrap;
         authFooterLabel.overflowMode = TextOverflowModes.Overflow;
         authFooterLabel.fontSize = 26f;
@@ -597,17 +598,6 @@ public class MainMenuSceneController : MonoBehaviour
         element.flexibleHeight = 1f;
 
         return content.transform;
-    }
-
-    private void EnsureDivider(Transform parent, string name)
-    {
-        GameObject divider = GetOrCreateChild((RectTransform)parent, name);
-        Image image = GetOrAdd<Image>(divider);
-        image.color = new Color(buttonBorderColor.r, buttonBorderColor.g, buttonBorderColor.b, 0.4f);
-
-        LayoutElement element = GetOrAdd<LayoutElement>(divider);
-        element.minHeight = 2f;
-        element.preferredHeight = 2f;
     }
 
     private void CreateTitleText(Transform parent, string name, string value)
@@ -848,60 +838,6 @@ public class MainMenuSceneController : MonoBehaviour
         }
 
         return text;
-    }
-
-    private void CreateSwitchRow(
-        Transform parent,
-        string rowName,
-        string prefixText,
-        string linkText,
-        UnityEngine.Events.UnityAction action
-    )
-    {
-        Transform row = EnsureRow(parent, rowName, 64f, 0f);
-
-        HorizontalLayoutGroup rowLayout = GetOrAdd<HorizontalLayoutGroup>(row.gameObject);
-        rowLayout.childAlignment = TextAnchor.MiddleCenter;
-        rowLayout.childControlWidth = true;
-        rowLayout.childForceExpandWidth = true;
-
-        string linkHex = ColorUtility.ToHtmlStringRGB(authLinkColor);
-        string normalHex = ColorUtility.ToHtmlStringRGB(authTextColor);
-        string centeredText = $"<color=#{normalHex}>{prefixText}</color> <u><color=#{linkHex}>{linkText}</color></u>";
-
-        GameObject rowButtonGo = GetOrCreateChild((RectTransform)row, "SwitchButton");
-        LayoutElement rowButtonLayout = GetOrAdd<LayoutElement>(rowButtonGo);
-        rowButtonLayout.preferredHeight = 56f;
-
-        Image rowButtonImage = GetOrAdd<Image>(rowButtonGo);
-        rowButtonImage.color = new Color(1f, 1f, 1f, 0f);
-        rowButtonImage.raycastTarget = true;
-
-        Button rowButton = GetOrAdd<Button>(rowButtonGo);
-        rowButton.targetGraphic = rowButtonImage;
-        rowButton.transition = Selectable.Transition.ColorTint;
-        rowButton.colors = CreateColorBlock(new Color(1f, 1f, 1f, 0f));
-        rowButton.onClick.RemoveAllListeners();
-        rowButton.onClick.AddListener(action);
-
-        GameObject labelGo = GetOrCreateChild((RectTransform)rowButtonGo.transform, "Label");
-        RectTransform labelRt = labelGo.GetComponent<RectTransform>();
-        labelRt.anchorMin = Vector2.zero;
-        labelRt.anchorMax = Vector2.one;
-        labelRt.offsetMin = Vector2.zero;
-        labelRt.offsetMax = Vector2.zero;
-
-        TextMeshProUGUI label = GetOrAdd<TextMeshProUGUI>(labelGo);
-        label.text = centeredText;
-        label.alignment = TextAlignmentOptions.Center;
-        label.textWrappingMode = TextWrappingModes.NoWrap;
-        label.overflowMode = TextOverflowModes.Overflow;
-        label.fontSize = 30f;
-        label.fontStyle = FontStyles.Bold;
-        if (logoFont != null)
-        {
-            label.font = logoFont;
-        }
     }
 
     private void ShowAuthPanel(bool show)
@@ -1485,7 +1421,6 @@ public class MainMenuSceneController : MonoBehaviour
             Application.Quit();
         }
     }
-
     private static ColorBlock CreateColorBlock(Color baseColor)
     {
         ColorBlock colors = ColorBlock.defaultColorBlock;

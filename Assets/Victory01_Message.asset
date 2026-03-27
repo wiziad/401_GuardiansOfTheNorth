@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1b618a1fbba6a489a701f8f49ab43c, type: 3}
   m_Name: Victory01_Message
   m_EditorClassIdentifier: Assembly-CSharp::LevelIntroData
-  levelTitle: LEVEL 1 COMPLETE
+  levelTitle: LEVEL 2 COMPLETE
   levelContext: 'You tracked and contained the wild boar.
 
 

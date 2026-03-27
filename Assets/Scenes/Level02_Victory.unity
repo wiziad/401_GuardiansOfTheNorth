@@ -365,7 +365,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: f910c58a397a55f4885fe4872fe08447, type: 2}
     - target: {fileID: 5031993605309878939, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: nextSceneName
-      value: End_Congrats
+      value: Map2
       objectReference: {fileID: 0}
     - target: {fileID: 5172610606098553712, guid: 94676fc364d01774898a6eefbf15a97a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -421,7 +421,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.96, g: 0.89, b: 0.75, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

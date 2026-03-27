@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -85,7 +86,29 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
+        bool shouldCompleteLevel1 = ShouldCompleteLevel1Now();
         Debug.Log(gameObject.name + " died");
         Destroy(gameObject);
+
+        if (shouldCompleteLevel1)
+        {
+            if (GameProgress.Instance != null)
+            {
+                GameProgress.Instance.SetLevel1Complete();
+            }
+
+            SceneRoutes.LoadScene(SceneRoutes.Level1VictoryScene);
+        }
+    }
+
+    private bool ShouldCompleteLevel1Now()
+    {
+        if (SceneManager.GetActiveScene().name != SceneRoutes.Level1Scene)
+        {
+            return false;
+        }
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        return enemies.Length <= 1;
     }
 }

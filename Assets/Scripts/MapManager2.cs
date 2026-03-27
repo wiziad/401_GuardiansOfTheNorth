@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class MapManager2 : MonoBehaviour
 {
@@ -94,7 +93,7 @@ public class MapManager2 : MonoBehaviour
     {
         if (CloudSaveManager.Instance != null)
             CloudSaveManager.Instance.SaveCurrentProgress();
-        SceneManager.LoadScene("ScrollIntro");
+        SceneRoutes.LoadScene(SceneRoutes.ScrollIntroScene);
     }
 
     void CloseLevelPanel()

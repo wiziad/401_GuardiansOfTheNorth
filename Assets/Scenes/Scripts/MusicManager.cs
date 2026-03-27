@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance;
 
     private AudioSource audioSource;
+    private AudioClip mainMenuClip;
 
     private void Awake()
     {
@@ -20,6 +22,16 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
     public void PlayMusic(AudioClip newClip)
     {
         if (newClip == null) return;
@@ -33,5 +45,29 @@ public class MusicManager : MonoBehaviour
     public void StopMusic()
     {
         audioSource.Stop();
+    }
+
+    public void SetMainMenuClip(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            mainMenuClip = clip;
+        }
+    }
+
+    public AudioClip GetMainMenuClipOr(AudioClip fallbackClip)
+    {
+        return mainMenuClip != null ? mainMenuClip : fallbackClip;
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == SceneRoutes.Map1Scene || scene.name == SceneRoutes.Map2Scene)
+        {
+            if (mainMenuClip != null)
+            {
+                PlayMusic(mainMenuClip);
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 // Map2: Ontario already complete. Alberta is now unlocked.
 // Quebec is still locked (or hidden) until implemented.
@@ -90,7 +89,7 @@ public class MapManager : MonoBehaviour
     {
         if (CloudSaveManager.Instance != null)
             CloudSaveManager.Instance.SaveCurrentProgress();
-        SceneManager.LoadScene("ScrollIntro2");
+        SceneRoutes.LoadScene(SceneRoutes.ScrollIntro2Scene);
     }
 
     void CloseLevelPanel()

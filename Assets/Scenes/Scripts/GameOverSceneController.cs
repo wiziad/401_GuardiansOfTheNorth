@@ -181,11 +181,22 @@ public class GameOverSceneController : MonoBehaviour
 
     private void OnQuitPressed()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        string retryScene = PlayerPrefs.GetString(RetryScenePrefKey, SceneRoutes.Level1Scene);
+
+        // Return to the corresponding map instead of quitting.
+        if (retryScene == SceneRoutes.Level2Scene)
+        {
+            SceneRoutes.LoadScene(SceneRoutes.Map1Scene);
+            return;
+        }
+
+        if (retryScene == SceneRoutes.Level1Scene)
+        {
+            SceneRoutes.LoadScene(SceneRoutes.Map2Scene);
+            return;
+        }
+
+        SceneRoutes.LoadScene(SceneRoutes.Map1Scene);
     }
 
     private GameObject CreateUiObject(string name, RectTransform parent)

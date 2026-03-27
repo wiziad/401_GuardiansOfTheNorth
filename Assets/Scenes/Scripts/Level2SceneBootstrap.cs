@@ -17,6 +17,8 @@ public class Level2SceneBootstrap : MonoBehaviour
     [SerializeField] private bool buildInEditMode = true;
     [SerializeField] private bool showIntroBeforeGameplay = true;
     [SerializeField] private string introSceneName = "ScrollIntro2";
+    [SerializeField] private string completionSceneName = SceneRoutes.Level2VictoryScene;
+    [SerializeField] private string completionFallbackScenePath = "Assets/Scenes/Level02_Victory.unity";
     [SerializeField] private bool keepManualSceneObjectsVisible = true;
 
     [Header("Asset Paths")]
@@ -1137,6 +1139,7 @@ public class Level2SceneBootstrap : MonoBehaviour
 
         levelComplete = true;
         timerStarted = false;
+        SceneRoutes.LoadScene(completionSceneName, completionFallbackScenePath);
     }
 
     private void DrawInstructionPopup()
